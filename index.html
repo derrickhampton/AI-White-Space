@@ -59,7 +59,9 @@
 </head>
 <body>
   <h1>Hidden-Character Highlighter</h1>
+  
   <p>Paste or type text with hidden characters below:</p>
+  <div id="message"></div>
   <textarea id="input" placeholder="Enter text here…"></textarea>
   <p>Output with hidden characters highlighted:</p>
   <div id="output"></div>
@@ -75,6 +77,25 @@
   </div>
 
   <script>
+
+    const MAX_TRIES = 5;
+    const STORAGE_KEY = 'ws_tool_tries';
+
+    // Load current count or initialize to 0
+    let tries = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+
+    function updateMessage() {
+      if (tries >= MAX_TRIES) {
+        messageEl.textContent =
+          `You have used all ${MAX_TRIES} tries. Please come back later.`;
+        inputEl.disabled = true;
+      } else {
+        messageEl.textContent =
+          `Tries: ${tries} of ${MAX_TRIES}`;
+        inputEl.disabled = false;
+      }
+    }
+
     const mapping = {
       '\u00A0': 'NBSP',
       '\u200B': 'ZWSP',
@@ -93,6 +114,7 @@
     const outputEl = document.getElementById('output');
     const modal = document.getElementById('modal');
     const foundList = document.getElementById('foundList');
+    const messageEl = document.getElementById('message');
     const closeBtn = modal.querySelector('.close');
 
     function highlightHidden(text) {
@@ -142,11 +164,20 @@
     });
 
     inputEl.addEventListener('input', () => {
+      if (tries >= MAX_TRIES) {
+        // block further processing
+        return;
+      }
+      // consume a try
+      tries++;
+      localStorage.setItem(STORAGE_KEY, tries);
+      updateMessage();
       outputEl.innerHTML = highlightHidden(inputEl.value);
     });
 
     // Initialize
     outputEl.innerHTML = highlightHidden(inputEl.value);
+    updateMessage();
   </script>
 </body>
 </html>
