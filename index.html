@@ -17,20 +17,43 @@
       margin-bottom: 1rem;
     }
     #output {
-      width: 100%;
-      min-height: 150px;
-      border: 1px solid #ccc;
-      padding: .5rem;
-      white-space: pre-wrap;
-      font-family: monospace;
-      font-size: 1rem;
-    }
+
+    white-space: pre-wrap;       /* respect line breaks and wrap */
+    word-wrap: break-word;       /* break long words */
+    border: 1px solid #ccc;
+    padding: .5rem;
+    font-family: monospace;
+    font-size: 1rem;
+    background: #f9f9f9;
+  }
     .highlight {
       background: #ffeb3b;
       color: #000;
       font-weight: bold;
       border-radius: 2px;
       padding: 0 2px;
+    }
+
+    /* Simple modal */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,.6);
+      align-items: center;
+      justify-content: center;
+    }
+    #modal .content {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 4px;
+      max-width: 90%;
+      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    }
+    #modal .close {
+      float: right;
+      cursor: pointer;
+      font-size: 1.2rem;
     }
   </style>
 </head>
@@ -41,9 +64,18 @@
   <p>Output with hidden characters highlighted:</p>
   <div id="output"></div>
 
+  <!-- Modal -->
+  <div id="modal">
+    <div class="content">
+      <span class="close">&times;</span>
+      <h2>Hidden Whitespace Detected</h2>
+      <p>The following hidden characters were found:</p>
+      <ul id="foundList"></ul>
+    </div>
+  </div>
+
   <script>
     const mapping = {
-      '\u0020': 'SPACE',
       '\u00A0': 'NBSP',
       '\u200B': 'ZWSP',
       '\u200C': 'ZWNJ',
@@ -54,42 +86,66 @@
       '\u2007': 'FIGURE_SPACE',
       '\u2002': 'EN_SPACE',
       '\u2003': 'EM_SPACE',
-      '\u202F': 'NNB_SPACE',
-      '\t': 'TAB',
-      '\n': 'LF',
-      '\r': 'CR',
-      '\f': 'FF'
+      '\u202F': 'NNB_SPACE'
     };
 
     const inputEl = document.getElementById('input');
     const outputEl = document.getElementById('output');
+    const modal = document.getElementById('modal');
+    const foundList = document.getElementById('foundList');
+    const closeBtn = modal.querySelector('.close');
 
     function highlightHidden(text) {
       let result = '';
+      const found = new Set();
+
       for (let ch of text) {
         if (mapping[ch]) {
-          // For line breaks, insert a break after the marker
-          if (ch === '\n') {
-            result += `<span class="highlight">[${mapping[ch]}]</span>\n`;
-          } else {
-            result += `<span class="highlight">[${mapping[ch]}]</span>`;
-          }
+          found.add(mapping[ch]);
+          result += `<span class="highlight">[${mapping[ch]}]</span>`;
         } else {
-          // escape HTML entities
           result += ch
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
         }
       }
+
+      // If any hidden chars found, show modal
+      if (found.size) {
+        showModal(Array.from(found));
+      } else {
+        closeModal();
+      }
+
       return result;
     }
+
+    function showModal(items) {
+      // clear old list
+      foundList.innerHTML = '';
+      items.forEach(name => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        foundList.appendChild(li);
+      });
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal();
+    });
 
     inputEl.addEventListener('input', () => {
       outputEl.innerHTML = highlightHidden(inputEl.value);
     });
 
-    // initialize
+    // Initialize
     outputEl.innerHTML = highlightHidden(inputEl.value);
   </script>
 </body>
