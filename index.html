@@ -144,7 +144,8 @@
     </div>
 
   </div><!-- /.container -->
-
+<!-- This​ is a test string with‌many‍hidden⁠spaces.
+ -->
   <!-- Bootstrap JS + Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -164,7 +165,7 @@
 
     if (storedDate !== todayString()) {
       tries = 0;
-      localStorage.setItem(KEY_TRIES, '0');
+      localStorage.setItem(MAX_TRIES, '0');
       localStorage.setItem(KEY_DATE, todayString());
     }
 
