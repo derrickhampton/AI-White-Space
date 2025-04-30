@@ -140,8 +140,22 @@
   <script>
     const MAX_TRIES = 5;
     const STORAGE_KEY = 'ws_tool_tries';
+    const KEY_DATE     = 'ws_tool_date';
 
+     // Utility to get YYYY-MM-DD for today
+  function todayString() {
+    const d = new Date();
+    return d.toISOString().slice(0,10);
+  }
+
+    let storedDate = localStorage.getItem(KEY_DATE);
     let tries = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+
+    if (storedDate !== todayString()) {
+    tries = 0;
+    localStorage.setItem(KEY_TRIES, '0');
+    localStorage.setItem(KEY_DATE, todayString());
+  }
 
     const mapping = {
       '\u00A0': 'NBSP',
@@ -219,6 +233,7 @@
       if (tries >= MAX_TRIES) return;
       tries++;
       localStorage.setItem(STORAGE_KEY, tries);
+      localStorage.setItem(KEY_DATE, todayString());
       updateMessage();
       outputEl.innerHTML = highlightHidden(inputEl.value);
     });
