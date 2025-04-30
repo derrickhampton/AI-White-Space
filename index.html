@@ -3,50 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hidden-Character Highlighter</title>
+  <title>Whitespace Highlighter</title>
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  /> 
+
   <style>
     body {
-      font-family: sans-serif;
-      margin: 2rem;
+      padding-top: 2rem;
     }
-    textarea {
-      width: 100%;
-      height: 150px;
-      font-family: monospace;
-      font-size: 1rem;
-      margin-bottom: 1rem;
+    /* Metro‐style tile cards */
+    .metro-card {
+      border: none;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      border-radius: .5rem;
+      transition: transform .2s;
     }
+    .metro-card:hover {
+      transform: scale(1.05);
+    }
+    /* Highlighter */
     #output {
-
-    white-space: pre-wrap;       /* respect line breaks and wrap */
-    word-wrap: break-word;       /* break long words */
-    border: 1px solid #ccc;
-    padding: .5rem;
-    font-family: monospace;
-    font-size: 1rem;
-    background: #f9f9f9;
-  }
-    .highlight {
-      background: #ffeb3b;
-      color: #000;
-      font-weight: bold;
-      border-radius: 2px;
-      padding: 0 2px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      border: 1px solid #ccc;
+      padding: .5rem;
+      background: #f9f9f9;
+      height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
     }
-
-    /* Simple modal */
-    #modal {
+    .highlight { background: #ffeb3b; }
+    /* Modal centered */
+   /* #modal {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: rgba(0,0,0,.6);
       align-items: center;
       justify-content: center;
-    }
+    }*/
+    #modal.modal-overlay {
+  display: none;           /* hidden by default */
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  align-items: center;
+  justify-content: center;
+}
+#modal.modal-overlay.show {
+  display: flex;           /* only when we add “show” */
+}
     #modal .content {
       background: #fff;
       padding: 1.5rem;
-      border-radius: 4px;
+      border-radius: .5rem;
       max-width: 90%;
       box-shadow: 0 2px 10px rgba(0,0,0,.3);
     }
@@ -58,43 +73,75 @@
   </style>
 </head>
 <body>
-  <h1>Hidden-Character Highlighter</h1>
-  
-  <p>Paste or type text with hidden characters below:</p>
-  <div id="message"></div>
-  <textarea id="input" placeholder="Enter text here…"></textarea>
-  <p>Output with hidden characters highlighted:</p>
-  <div id="output"></div>
 
-  <!-- Modal -->
-  <div id="modal">
-    <div class="content">
-      <span class="close">&times;</span>
-      <h2>Hidden Whitespace Detected</h2>
-      <p>The following hidden characters were found:</p>
-      <ul id="foundList"></ul>
+  <div class="container">
+
+    <!-- PRICING METRO GRID -->
+    <h2 class="mb-4 text-center">Choose Your Plan</h2>
+    <div class="row g-3 mb-5">
+      <div class="col-md-4">
+        <div class="metro-card bg-primary">
+          <h3>Free</h3>
+          <p class="display-6">$0<span class="fs-6">/month</span></p>
+          <ul class="list-unstyled">
+            <li>Up to 5 checks/day</li>
+            <li>Basic highlighting</li>
+            
+          </ul>
+          <button class="btn btn-light">Select Free</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="metro-card bg-success">
+          <h3>Pro</h3>
+          <p class="display-6">$9.99<span class="fs-6">/month</span></p>
+          <ul class="list-unstyled">
+            <li>Unlimited checks</li>
+            <li>Advanced detection</li>
+            <li>Priority email support</li>
+          </ul>
+          <button class="btn btn-light">Get Pro</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="metro-card bg-danger">
+          <h3>Enterprise</h3>
+          <p class="display-6">Contact Us</p>
+          <ul class="list-unstyled">
+            <li>Custom API integrations</li>
+            <li>Dedicated support</li>
+            <li>On‐premise options</li>
+          </ul>
+          <button class="btn btn-light">Contact Sales</button>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <!-- HIGHIGHTER TOOL -->
+    <h2 class="mb-3">Hidden-Character Highlighter</h2>
+    <div id="message" class="mb-2 text-danger fw-bold"></div>
+    <textarea id="input" class="form-control mb-3" placeholder="Paste text here…"></textarea>
+    <div id="output" class="mb-3"></div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal-overlay">
+      <div class="content position-relative">
+        <span class="close">&times;</span>
+        <h5>Hidden Whitespace Found</h5>
+        <ul id="foundList"></ul>
+      </div>
+    </div>
+
+  </div><!-- /.container -->
+
+  <!-- Bootstrap JS + Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-
     const MAX_TRIES = 5;
     const STORAGE_KEY = 'ws_tool_tries';
 
-    // Load current count or initialize to 0
     let tries = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
-
-    function updateMessage() {
-      if (tries >= MAX_TRIES) {
-        messageEl.textContent =
-          `You have used all ${MAX_TRIES} tries. Please come back later.`;
-        inputEl.disabled = true;
-      } else {
-        messageEl.textContent =
-          `Tries: ${tries} of ${MAX_TRIES}`;
-        inputEl.disabled = false;
-      }
-    }
 
     const mapping = {
       '\u00A0': 'NBSP',
@@ -110,12 +157,22 @@
       '\u202F': 'NNB_SPACE'
     };
 
-    const inputEl = document.getElementById('input');
-    const outputEl = document.getElementById('output');
-    const modal = document.getElementById('modal');
+    const inputEl   = document.getElementById('input');
+    const outputEl  = document.getElementById('output');
+    const modal     = document.getElementById('modal');
     const foundList = document.getElementById('foundList');
     const messageEl = document.getElementById('message');
-    const closeBtn = modal.querySelector('.close');
+    const closeBtn  = modal.querySelector('.close');
+
+    function updateMessage() {
+      if (tries >= MAX_TRIES) {
+        messageEl.textContent = `Maximum of ${MAX_TRIES} uses reached.`;
+        inputEl.disabled = true;
+      } else {
+        messageEl.textContent = `Uses: ${tries} / ${MAX_TRIES}`;
+        inputEl.disabled = false;
+      }
+    }
 
     function highlightHidden(text) {
       let result = '';
@@ -133,29 +190,24 @@
         }
       }
 
-      // If any hidden chars found, show modal
-      if (found.size) {
-        showModal(Array.from(found));
-      } else {
-        closeModal();
-      }
+      if (found.size) showModal(Array.from(found));
+      else closeModal();
 
       return result;
     }
 
     function showModal(items) {
-      // clear old list
       foundList.innerHTML = '';
       items.forEach(name => {
-        const li = document.createElement('li');
+        let li = document.createElement('li');
         li.textContent = name;
         foundList.appendChild(li);
       });
-      modal.style.display = 'flex';
+      modal.classList.add('show');
     }
 
     function closeModal() {
-      modal.style.display = 'none';
+      modal.classList.remove('show');
     }
 
     closeBtn.addEventListener('click', closeModal);
@@ -164,11 +216,7 @@
     });
 
     inputEl.addEventListener('input', () => {
-      if (tries >= MAX_TRIES) {
-        // block further processing
-        return;
-      }
-      // consume a try
+      if (tries >= MAX_TRIES) return;
       tries++;
       localStorage.setItem(STORAGE_KEY, tries);
       updateMessage();
@@ -176,8 +224,9 @@
     });
 
     // Initialize
-    outputEl.innerHTML = highlightHidden(inputEl.value);
     updateMessage();
+    outputEl.innerHTML = highlightHidden(inputEl.value);
   </script>
+
 </body>
 </html>
