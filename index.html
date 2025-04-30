@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hidden-Character Highlighter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-family: monospace;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    #output {
+      width: 100%;
+      min-height: 150px;
+      border: 1px solid #ccc;
+      padding: .5rem;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+    .highlight {
+      background: #ffeb3b;
+      color: #000;
+      font-weight: bold;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hidden-Character Highlighter</h1>
+  <p>Paste or type text with hidden characters below:</p>
+  <textarea id="input" placeholder="Enter text here…"></textarea>
+  <p>Output with hidden characters highlighted:</p>
+  <div id="output"></div>
+
+  <script>
+    const mapping = {
+      '\u0020': 'SPACE',
+      '\u00A0': 'NBSP',
+      '\u200B': 'ZWSP',
+      '\u200C': 'ZWNJ',
+      '\u200D': 'ZWJ',
+      '\u2060': 'WORD_JOINER',
+      '\u200A': 'HAIR_SPACE',
+      '\u2009': 'THIN_SPACE',
+      '\u2007': 'FIGURE_SPACE',
+      '\u2002': 'EN_SPACE',
+      '\u2003': 'EM_SPACE',
+      '\u202F': 'NNB_SPACE',
+      '\t': 'TAB',
+      '\n': 'LF',
+      '\r': 'CR',
+      '\f': 'FF'
+    };
+
+    const inputEl = document.getElementById('input');
+    const outputEl = document.getElementById('output');
+
+    function highlightHidden(text) {
+      let result = '';
+      for (let ch of text) {
+        if (mapping[ch]) {
+          // For line breaks, insert a break after the marker
+          if (ch === '\n') {
+            result += `<span class="highlight">[${mapping[ch]}]</span>\n`;
+          } else {
+            result += `<span class="highlight">[${mapping[ch]}]</span>`;
+          }
+        } else {
+          // escape HTML entities
+          result += ch
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        }
+      }
+      return result;
+    }
+
+    inputEl.addEventListener('input', () => {
+      outputEl.innerHTML = highlightHidden(inputEl.value);
+    });
+
+    // initialize
+    outputEl.innerHTML = highlightHidden(inputEl.value);
+  </script>
+</body>
+</html>
