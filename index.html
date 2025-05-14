@@ -1,266 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="keywords" content="hidden characters, zero-width space detector, AI text highlighter, zero-width non-joiner, zero-width joiner, word joiner, thin space highlighter, hair space finder, non-breaking space detector, invisible character remover, AI hidden whitespace tool, text sanitizer, invisible delimiter detector, security watermark scanner, unicode whitespace highlighter, AI content integrity, text formatting tool, hidden-char viewer, invisible whitespace analyzer, zero-width character remover" />
-  <title>AI Hidden-Character Highlighter</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <style>
-    body {
-      padding-top: 2rem;
-    }
-
-    /* Metro‐style tile cards */
-    .metro-card {
-      border: none;
-      color: #fff;
-      text-align: center;
-      padding: 2rem;
-      border-radius: .5rem;
-      transition: transform .2s;
-    }
-
-    .metro-card:hover {
-      transform: scale(1.05);
-    }
-
-    #input {
-      height: 200px;
-      overflow-y: auto;
-    }
-
-    /* Highlighter */
-    #output {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      border: 1px solid #ccc;
-      padding: .5rem;
-      background: #f9f9f9;
-      height: 200px;
-      overflow-y: auto;
-      font-family: monospace;
-    }
-
-    .highlight {
-      background: #ffeb3b;
-    }
-
-    /* Modal centered */
-    /* #modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      align-items: center;
-      justify-content: center;
-    }*/
-    #modal.modal-overlay {
-      display: none;
-      /* hidden by default */
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .6);
-      align-items: center;
-      justify-content: center;
-    }
-
-    #modal.modal-overlay.show {
-      display: flex;
-      /* only when we add “show” */
-    }
-
-    #modal .content {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: .5rem;
-      max-width: 90%;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
-    }
-
-    #modal .close {
-      float: right;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <!-- PRICING METRO GRID -->
-    <!-- <h2 class="mb-4 text-center">Choose Your Plan</h2>
-    <div class="row g-3 mb-5">
-      <div class="col-md-4">
-        <div class="metro-card bg-primary">
-          <h3>Free</h3>
-          <p class="display-6">$0<span class="fs-6">/month</span></p>
-          <ul class="list-unstyled">
-            <li>Up to 5 checks/day</li>
-            <li>Basic highlighting</li>
-
-          </ul>
-          <button class="btn btn-light">Select Free</button>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Full Width Pics - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">Start Bootstrap</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1600x900')">
+            <div class="text-center my-5">
+                <img class="img-fluid rounded-circle mb-4" src="https://dummyimage.com/150x150/6c757d/dee2e6.jpg" alt="..." />
+                <h1 class="text-white fs-3 fw-bolder">Full Width Pics</h1>
+                <p class="text-white-50 mb-0">Landing Page Template</p>
+            </div>
+        </header>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h2>Full Width Backgrounds</h2>
+                        <p class="lead">A single, lightweight helper class allows you to add engaging, full width background images to sections of your page.</p>
+                        <p class="mb-0">The universe is almost 14 billion years old, and, wow! Life had no problem starting here on Earth! I think it would be inexcusably egocentric of us to suggest that we're alone in the universe.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 20rem"></div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="metro-card bg-success">
-          <h3>Pro</h3>
-          <p class="display-6">$9.99<span class="fs-6">/month</span></p>
-          <ul class="list-unstyled">
-            <li>Unlimited checks</li>
-            <li>Advanced detection</li>
-            <li>Priority email support</li>
-          </ul>
-          <button class="btn btn-light">Get Pro</button>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="metro-card bg-danger">
-          <h3>Enterprise</h3>
-          <p class="display-6">Contact Us</p>
-          <ul class="list-unstyled">
-            <li>Custom API integrations</li>
-            <li>Dedicated support</li>
-            <li>On‐premise options</li>
-          </ul>
-          <button class="btn btn-light">Contact Sales</button>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- HIGHIGHTER TOOL -->
-    <h2 class="mb-3">AI Hidden-Character Highlighter</h2>
-    <div id="message" class="mb-2 text-danger fw-bold"></div>
-    <textarea id="input" class="form-control mb-3" placeholder="Paste text here…"></textarea>
-    <div id="output" class="mb-3"></div>
-
-    <!-- MODAL -->
-    <div id="modal" class="modal-overlay">
-      <div class="content position-relative">
-        <span class="close">&times;</span>
-        <h5>Hidden Whitespace Found</h5>
-        <ul id="foundList"></ul>
-      </div>
-    </div>
-
-  </div><!-- /.container -->
-  <!-- This​ is a test string with‌many‍hidden⁠spaces.
- -->
-  <!-- Bootstrap JS + Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    const MAX_TRIES = 5;
-    const STORAGE_KEY = 'ws_tool_tries';
-    const KEY_DATE = 'ws_tool_date';
-
-    // Utility to get YYYY-MM-DD for today
-    function todayString() {
-      const d = new Date();
-      return d.toISOString().slice(0, 10);
-    }
-
-    let storedDate = localStorage.getItem(KEY_DATE);
-    let tries = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
-
-    if (storedDate !== todayString()) {
-      tries = 0;
-      localStorage.setItem(MAX_TRIES, '0');
-      localStorage.setItem(KEY_DATE, todayString());
-    }
-
-    const mapping = {
-      '\u00A0': 'NBSP',
-      '\u200B': 'ZWSP',
-      '\u200C': 'ZWNJ',
-      '\u200D': 'ZWJ',
-      '\u2060': 'WORD_JOINER',
-      '\u200A': 'HAIR_SPACE',
-      '\u2009': 'THIN_SPACE',
-      '\u2007': 'FIGURE_SPACE',
-      '\u2002': 'EN_SPACE',
-      '\u2003': 'EM_SPACE',
-      '\u202F': 'NNB_SPACE'
-    };
-
-    const inputEl = document.getElementById('input');
-    const outputEl = document.getElementById('output');
-    const modal = document.getElementById('modal');
-    const foundList = document.getElementById('foundList');
-    const messageEl = document.getElementById('message');
-    const closeBtn = modal.querySelector('.close');
-
-    function updateMessage() {
-      if (tries >= MAX_TRIES) {
-        messageEl.textContent = `Maximum of ${MAX_TRIES} uses reached.`;
-        inputEl.disabled = true;
-      } else {
-        messageEl.textContent = `Uses: ${tries} / ${MAX_TRIES}`;
-        inputEl.disabled = false;
-      }
-    }
-
-    function highlightHidden(text) {
-      let result = '';
-      const found = new Set();
-
-      for (let ch of text) {
-        if (mapping[ch]) {
-          found.add(mapping[ch]);
-          result += `<span class="highlight">[${mapping[ch]}]</span>`;
-        } else {
-          result += ch
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-        }
-      }
-
-      if (found.size) showModal(Array.from(found));
-      else closeModal();
-
-      return result;
-    }
-
-    function showModal(items) {
-      foundList.innerHTML = '';
-      items.forEach(name => {
-        let li = document.createElement('li');
-        li.textContent = name;
-        foundList.appendChild(li);
-      });
-      modal.classList.add('show');
-    }
-
-    function closeModal() {
-      modal.classList.remove('show');
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', e => {
-      if (e.target === modal) closeModal();
-    });
-
-    inputEl.addEventListener('input', () => {
-      if (tries >= MAX_TRIES) return;
-      tries++;
-      localStorage.setItem(STORAGE_KEY, tries);
-      localStorage.setItem(KEY_DATE, todayString());
-      updateMessage();
-      outputEl.innerHTML = highlightHidden(inputEl.value);
-    });
-
-    // Initialize
-    updateMessage();
-    outputEl.innerHTML = highlightHidden(inputEl.value);
-  </script>
-
-</body>
-
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h2>Engaging Background Images</h2>
+                        <p class="lead">The background images used in this template are sourced from Unsplash and are open source and free to use.</p>
+                        <p class="mb-0">I can't tell you how many people say they were turned off from science because of a science teacher that completely sucked out all the inspiration and enthusiasm they had for the course.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
 </html>
