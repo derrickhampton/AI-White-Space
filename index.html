@@ -105,20 +105,32 @@
             z-index: 1;
         }
 
-        /* Donate modal uses same overlay style as #modal */
-        #donateModal.modal-overlay {
-            display: none;
-            /* hidden by default */
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .6);
-            align-items: center;
-            justify-content: center;
-        }
+       /* Overlay: dark, semi-transparent backdrop */
+#donateModal.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); /* darker backdrop */
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
 
-        #donateModal.modal-overlay.show {
-            display: flex;
-        }
+/* Show */
+#donateModal.modal-overlay.show {
+  display: flex;
+}
+
+/* Content box: solid white background */
+#donateModal .content {
+  background-color: #ffffff;   /* solid white */
+  padding: 1.5rem;
+  border-radius: .5rem;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  position: relative;
+  z-index: 1060;               /* above overlay */
+}
 
         /* close button styling inherited from existing rules */
     </style>
@@ -135,7 +147,17 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Donate</a></li>
+                    <li class="nav-item"><form action="https://www.paypal.com/donate" method="post" target="_top">
+                        <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+                        <input type="hidden" name="no_recurring" value="0" />
+                        <input type="hidden" name="item_name"
+                            value="If you find this tool helpful, please consider a small donation via PayPal" />
+                        <input type="hidden" name="currency_code" value="USD" />
+                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                            name="submit" title="PayPal - The safer, easier way to pay online!"
+                            alt="Donate with PayPal button" />
+                        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                    </form></li>
                     <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
                 </ul>
             </div>
@@ -167,21 +189,28 @@
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Donate Modal -->
+         <!-- Donate Modal -->
     <div id="donateModal" class="modal-overlay">
         <div class="content position-relative">
             <span class="close">&times;</span>
             <h5>Please Support Us</h5>
-            <p>If you find this tool helpful, please consider a small donation via PayPal:</p>
+            <span>If you find this tool helpful, please consider a small donation via PayPal</span>
             <form action="https://www.paypal.com/donate" method="post" target="_top">
-                <input type="hidden" name="hosted_button_id" value="BRM9RW9FSJUB6" />
+                <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+                <input type="hidden" name="no_recurring" value="0" />
+                <input type="hidden" name="item_name"
+                    value="If you find this tool helpful, please consider a small donation via PayPal" />
+                <input type="hidden" name="currency_code" value="USD" />
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
                     name="submit" title="PayPal - The safer, easier way to pay online!"
                     alt="Donate with PayPal button" />
+                <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
             </form>
+
         </div>
     </div>
+    </section>
+   
     <!-- Image element - set the background image for the header in the line below-->
     <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
         <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->

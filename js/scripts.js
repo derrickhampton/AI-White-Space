@@ -156,9 +156,8 @@ outputEl.innerHTML = highlightHidden(inputEl.value);
 
 document.getElementById('downloadBtn').addEventListener('click', () => {
     // 1. Grab the text content (you can also use .innerHTML if you prefer)
-    const text = document.getElementById('output').innerText;
-    //remove hidden chars and replace with space
-    text = replaceHiddenChars(text);
+    const text = replaceHiddenChars(document.getElementById('output').innerText);
+  
     // 2. Create a Blob from the text
     const blob = new Blob([text], { type: 'text/plain' });
 
