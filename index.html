@@ -104,6 +104,23 @@
             position: relative;
             z-index: 1;
         }
+
+        /* Donate modal uses same overlay style as #modal */
+        #donateModal.modal-overlay {
+            display: none;
+            /* hidden by default */
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #donateModal.modal-overlay.show {
+            display: flex;
+        }
+
+        /* close button styling inherited from existing rules */
     </style>
 </head>
 
@@ -138,7 +155,7 @@
                 <textarea id="input" class="form-control mb-3" placeholder="Paste text here…"></textarea>
                 <div id="output" class="mb-3"></div>
                 <button id="downloadBtn" class="btn btn-primary">
-                    Download as .txt
+                    Remove Hidden AI Characters and Download as .txt
                 </button>
                 <!-- MODAL -->
                 <div id="modal" class="modal-overlay">
@@ -151,6 +168,20 @@
             </div>
         </div>
     </section>
+    <!-- Donate Modal -->
+    <div id="donateModal" class="modal-overlay">
+        <div class="content position-relative">
+            <span class="close">&times;</span>
+            <h5>Please Support Us</h5>
+            <p>If you find this tool helpful, please consider a small donation via PayPal:</p>
+            <form action="https://www.paypal.com/donate" method="post" target="_top">
+                <input type="hidden" name="hosted_button_id" value="BRM9RW9FSJUB6" />
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                    name="submit" title="PayPal - The safer, easier way to pay online!"
+                    alt="Donate with PayPal button" />
+            </form>
+        </div>
+    </div>
     <!-- Image element - set the background image for the header in the line below-->
     <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
         <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->

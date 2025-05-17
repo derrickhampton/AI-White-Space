@@ -37,6 +37,24 @@ const modal = document.getElementById('modal');
 const foundList = document.getElementById('foundList');
 const messageEl = document.getElementById('message');
 const closeBtn = modal.querySelector('.close');
+const donateModal = document.getElementById('donateModal');
+const donateClose = donateModal.querySelector('.close');
+const downloadBtn = document.getElementById('downloadBtn');
+
+// Helper to show/hide
+function showDonateModal() {
+  donateModal.classList.add('show');
+}
+function closeDonateModal() {
+  donateModal.classList.remove('show');
+}
+
+// Close handlers
+donateClose.addEventListener('click', closeDonateModal);
+donateModal.addEventListener('click', e => {
+  if (e.target === donateModal) closeDonateModal();
+});
+
 
 function updateMessage() {
   /*if (tries >= MAX_TRIES) {
@@ -46,6 +64,22 @@ function updateMessage() {
     messageEl.textContent = `Uses: ${tries} / ${MAX_TRIES}`;
     inputEl.disabled = false;
   }*/
+}
+
+/**
+ * Replace all hidden/zero-width chars in `str` with a plain space.
+ * @param {string} str
+ * @returns {string}
+ */
+function replaceHiddenChars(str) {
+  let clean = str;
+  for (const hiddenChar of Object.keys(mapping)) {
+    // Use split/join or replaceAll (if supported)
+    clean = clean.split(hiddenChar).join(' ');
+    // — or if you have replaceAll:
+    // clean = clean.replaceAll(hiddenChar, ' ');
+  }
+  return clean;
 }
 
 function highlightHidden(text) {
@@ -90,12 +124,30 @@ modal.addEventListener('click', e => {
 });
 
 inputEl.addEventListener('input', () => {
-  //if (tries >= MAX_TRIES) return;
-  //tries++;
-  localStorage.setItem(STORAGE_KEY, tries);
-  localStorage.setItem(KEY_DATE, todayString());
+
   updateMessage();
   outputEl.innerHTML = highlightHidden(inputEl.value);
+  //TODO
+  /*
+  fetch('/api/hidden-chars', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text: inputEl.value })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  })
+  .then(json => {
+    console.log('API response:', json);
+    // e.g. update UI further based on json if needed
+  })
+  .catch(err => {
+    console.error('Error sending text to API:', err);
+  });*/
+
 });
 
 // Initialize
@@ -105,7 +157,8 @@ outputEl.innerHTML = highlightHidden(inputEl.value);
 document.getElementById('downloadBtn').addEventListener('click', () => {
     // 1. Grab the text content (you can also use .innerHTML if you prefer)
     const text = document.getElementById('output').innerText;
-
+    //remove hidden chars and replace with space
+    text = replaceHiddenChars(text);
     // 2. Create a Blob from the text
     const blob = new Blob([text], { type: 'text/plain' });
 
@@ -118,4 +171,5 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
     a.click();                      // trigger the download
     document.body.removeChild(a);   // cleanup
     URL.revokeObjectURL(url);       // free up memory
+    showDonateModal();
   });
