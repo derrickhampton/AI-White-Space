@@ -128,7 +128,7 @@ inputEl.addEventListener('input', () => {
   updateMessage();
   outputEl.innerHTML = highlightHidden(inputEl.value);
   //TODO
-  /*
+  
   fetch('/api/hidden-chars', {
     method: 'POST',
     headers: {
@@ -146,7 +146,7 @@ inputEl.addEventListener('input', () => {
   })
   .catch(err => {
     console.error('Error sending text to API:', err);
-  });*/
+  });
 
 });
 
