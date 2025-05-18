@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // --- 1) Database credentials (edit these!) ---
-define('DB_HOST', 'localhost');
+define('DB_HOST', '10.30.72.172');
 define('DB_NAME', 'hiddenchar');
 define('DB_USER', 'hiddenchar_user');
 define('DB_PASS', 'Rubb3rDuck$$');
