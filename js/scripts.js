@@ -129,7 +129,7 @@ inputEl.addEventListener('input', () => {
   outputEl.innerHTML = highlightHidden(inputEl.value);
   //TODO
   
-  fetch('/api/hidden-chars', {
+  fetch('/api/hidden-chars.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
