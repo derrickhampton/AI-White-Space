@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Contact HiddenChars • AI Hidden Character Detector & Support</title>
-<meta name="description" 
-      content="Get in touch with HiddenChars — creators of the AI Hidden Character Highlighter and Zero-Width Space Detector. Contact us at info@hiddenchars.com for support, feedback, or collaboration inquiries." />
-<meta name="keywords" 
-      content="HiddenChars contact, AI hidden character detector, zero width space tool, invisible character remover, Unicode whitespace scanner, hidden text analyzer, AI text integrity support, zero width joiner finder" />
-<meta name="robots" content="index,follow">
-<meta property="og:title" content="Contact HiddenChars • AI Hidden Character Detector & Support" />
-<meta property="og:description" content="Reach out to HiddenChars for help or feedback about our AI tool that reveals invisible characters and zero-width spaces in text." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://www.hiddenchars.com/contact.html" />
-<meta property="og:image" content="https://www.hiddenchars.com/assets/og-image.jpg" />
+  <meta name="description" 
+        content="Get in touch with HiddenChars — creators of the AI Hidden Character Highlighter and Zero-Width Space Detector. Contact us at info@hiddenchars.com for support, feedback, or collaboration inquiries." />
+  <meta name="keywords" 
+        content="HiddenChars contact, AI hidden character detector, zero width space tool, invisible character remover, Unicode whitespace scanner, hidden text analyzer, AI text integrity support, zero width joiner finder" />
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Contact HiddenChars • AI Hidden Character Detector & Support" />
+  <meta property="og:description" content="Reach out to HiddenChars for help or feedback about our AI tool that reveals invisible characters and zero-width spaces in text." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.hiddenchars.com/contact.html" />
+  <meta property="og:image" content="https://www.hiddenchars.com/assets/og-image.jpg" />
   <link rel="icon" href="/assets/favicon.ico" />
 
   <!-- Fonts -->
@@ -47,16 +47,41 @@
     }
 
     header{
-      padding: 1rem 1.25rem;
+      padding: .75rem 1.25rem;
       border-bottom: 1px solid rgba(122,168,255,.12);
       backdrop-filter: blur(6px);
       background: rgba(8,12,16,.8);
+    }
+
+    /* Top nav */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      max-width:1100px;
+      margin:0 auto;
     }
     .brand{
       font-weight:800; letter-spacing:.4px; margin:0;
       background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
       -webkit-background-clip:text; background-clip:text; color:transparent;
       font-size: 1.15rem;
+      text-decoration:none;
+      display:inline-block;
+    }
+    .nav-links a{
+      color: var(--hc-muted);
+      text-decoration:none;
+      font-weight:600;
+      padding:.4rem .7rem;
+      border-radius:10px;
+      border:1px solid transparent;
+    }
+    .nav-links a:hover{
+      color: var(--hc-text);
+      border-color: rgba(122,168,255,.25);
+      background: rgba(122,168,255,.08);
     }
 
     main{
@@ -174,7 +199,13 @@
 </head>
 <body>
   <header>
-    <h2 class="brand">HiddenChars</h2>
+    <nav class="topbar" aria-label="Primary">
+      <!-- Brand now links back to home -->
+      <a class="brand" href="/" aria-label="Go to HiddenChars home">HiddenChars</a>
+      <div class="nav-links">
+        <a href="/" aria-label="Home">Home</a>
+      </div>
+    </nav>
   </header>
 
   <main>
@@ -219,7 +250,7 @@
   </main>
 
   <footer>
-    © <span id="y"></span> HiddenChars • <a class="link" href="https://hiddencars.com" rel="noopener">hiddencars.com</a>
+    © <span id="y"></span> HiddenChars • <a class="link" href="https://www.hiddenchars.com" rel="noopener">hiddenchars.com</a>
   </footer>
 
   <!-- JSON-LD (optional) -->
@@ -228,7 +259,7 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "HiddenChars",
-    "url": "https://hiddencars.com",
+    "url": "https://www.hiddenchars.com",
     "email": "info@hiddenchars.com",
     "contactPoint": [{
       "@type": "ContactPoint",
