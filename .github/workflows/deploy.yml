@@ -1,4 +1,4 @@
-name: Deploy to Domain.com (SFTP → FTPS with debug)
+name: Deploy to Domain.com (diagnose + deploy)
 
 on:
   push:
@@ -12,22 +12,12 @@ jobs:
       HOST: ${{ secrets.FTP_SERVER }}     # e.g. 116bbd3.dcomhost.com
       USER: ${{ secrets.FTP_USERNAME }}
       PASS: ${{ secrets.FTP_PASSWORD }}
-      REMOTE: ${{ secrets.REMOTE_DIR }}   # e.g. public_html/  (can be subfolder)
+      REMOTE: ${{ secrets.REMOTE_DIR }}   # e.g. public_html/ or public_html/ai-white-space/
       LOCAL: ./                           # change to ./dist if you build
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # If you build, uncomment and set LOCAL to ./dist
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      # - name: Install & Build
-      #   run: |
-      #     npm ci
-      #     npm run build
-      #     echo "LOCAL=./dist" >> $GITHUB_ENV
 
       - name: Validate inputs
         shell: bash
@@ -39,7 +29,7 @@ jobs:
           [ -n "${REMOTE:-}" ]|| { echo "❌ Missing secret: REMOTE_DIR (e.g. public_html/)"; exit 1; }
           [ -d "${LOCAL}" ]   || { echo "❌ Local dir ${LOCAL} not found"; ls -la; exit 1; }
           case "$REMOTE" in */) ;; *) REMOTE="${REMOTE}/";; esac
-          echo "ℹ️ Host: $HOST"
+          echo "ℹ️ Host:   $HOST"
           echo "ℹ️ Remote: $REMOTE"
           echo "ℹ️ Local:  $LOCAL"
           echo "REMOTE=$REMOTE" >> "$GITHUB_ENV"
@@ -49,80 +39,78 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Probe SFTP (port 22) with debug
-        id: probe_sftp
+      - name: Probe SFTP (22) - list remote
+        id: sftp_list
         shell: bash
         run: |
           set +e
-          echo "🔎 Testing SFTP to $HOST:22 ..."
-          lftp -d -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 15; debug 9; pwd; ls -la \"$REMOTE\"; bye"
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          echo "🔎 SFTP ls $HOST:22 → $REMOTE"
+          lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 20; ls -la \"$REMOTE\"; bye"
+          echo "code=$?" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy via SFTP (if probe OK)
-        if: steps.probe_sftp.outputs.exit_code == '0'
-        shell: bash
-        run: |
-          set -e
-          echo "🚀 SFTP deploy → $HOST:$REMOTE"
-          lftp -d -u "$USER","$PASS" "sftp://$HOST:22" -e "\
-            set sftp:auto-confirm yes; \
-            set net:max-retries 5; \
-            set net:timeout 30; \
-            set net:reconnect-interval-base 5; \
-            set net:reconnect-interval-max 20; \
-            mkdir -p -f \"$REMOTE\"; \
-            mirror -Rev --parallel=2 --only-newer \
-              --exclude-glob .git* \
-              --exclude-glob .github \
-              --exclude-glob node_modules \
-              --exclude-glob '*.map' \
-              --exclude-glob README.md \
-              \"$LOCAL\" \"$REMOTE\"; \
-            bye"
-
-      - name: Probe FTPS explicit (port 21) with debug
-        if: steps.probe_sftp.outputs.exit_code != '0'
-        id: probe_ftps
+      - name: Probe FTPS (21) - list remote
+        if: steps.sftp_list.outputs.code != '0'
+        id: ftps_list
         shell: bash
         run: |
           set +e
-          echo "🔎 SFTP failed. Testing FTPS (explicit TLS) to $HOST:21 ..."
-          lftp -d -u "$USER","$PASS" "$HOST" -p 21 -e "\
-            set ftp:passive-mode yes; \
-            set ftp:ssl-force yes; \
-            set ftp:ssl-protect-data yes; \
-            set ssl:verify-certificate no; \
-            set net:timeout 15; \
-            debug 9; pwd; ls -la \"$REMOTE\"; bye"
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          echo "🔎 FTPS ls $HOST:21 → $REMOTE"
+          lftp -u "$USER","$PASS" "$HOST" -p 21 -e "set ftp:passive-mode yes; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; set net:timeout 20; ls -la \"$REMOTE\"; bye"
+          echo "code=$?" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy via FTPS explicit (if probe OK)
-        if: steps.probe_sftp.outputs.exit_code != '0' && steps.probe_ftps.outputs.exit_code == '0'
-        shell: bash
+      - name: Fail fast if neither protocol works
+        if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code != '0'
         run: |
-          set -e
-          echo "🚀 FTPS deploy → $HOST:$REMOTE"
-          lftp -d -u "$USER","$PASS" "$HOST" -p 21 -e "\
-            set ftp:passive-mode yes; \
-            set ftp:ssl-force yes; \
-            set ftp:ssl-protect-data yes; \
-            set ssl:verify-certificate no; \
-            set net:max-retries 5; \
-            set net:timeout 30; \
-            set net:reconnect-interval-base 5; \
-            set net:reconnect-interval-max 20; \
-            mkdir -p -f \"$REMOTE\"; \
-            mirror -Rev --parallel=2 --only-newer \
-              --exclude-glob .git* \
-              --exclude-glob .github \
-              --exclude-glob node_modules \
-              --exclude-glob '*.map' \
-              --exclude-glob README.md \
-              \"$LOCAL\" \"$REMOTE\"; \
-            bye"
-
-      - name: Fail with helpful hint
-        if: steps.probe_sftp.outputs.exit_code != '0' && steps.probe_ftps.outputs.exit_code != '0'
-        run: |
-          echo "::error::Could not connect via SFTP:22 or FTPS:21. Check that your Domain.com plan allows SFTP (SSH) or at least FTPS, verify credentials, and confirm the remote path (${REMOTE})."
+          echo "::error::Cannot list $REMOTE via SFTP:22 or FTPS:21. Likely causes: wrong protocol on your plan, wrong REMOTE_DIR, or host blocking GitHub runners."
           exit 1
+
+      - name: Create marker file
+        run: |
+          echo "deployed $(date -u +%FT%TZ) from AI-White-Space" > .deploy-ok
+
+      - name: Upload marker via SFTP
+        if: steps.sftp_list.outputs.code == '0'
+        shell: bash
+        run: |
+          set -e
+          echo "📝 SFTP put .deploy-ok → $REMOTE"
+          lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 30; put -O \"$REMOTE\" .deploy-ok; bye"
+
+      - name: Upload marker via FTPS
+        if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code == '0'
+        shell: bash
+        run: |
+          set -e
+          echo "📝 FTPS put .deploy-ok → $REMOTE"
+          lftp -u "$USER","$PASS" "$HOST" -p 21 -e "set ftp:passive-mode yes; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; set net:timeout 30; put -O \"$REMOTE\" .deploy-ok; bye"
+
+      - name: Mirror via SFTP
+        if: steps.sftp_list.outputs.code == '0'
+        shell: bash
+        run: |
+          set -e
+          echo "🚀 SFTP mirror $LOCAL → $REMOTE"
+          lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "\
+            set sftp:auto-confirm yes; set net:max-retries 5; set net:timeout 30; \
+            mkdir -p -f \"$REMOTE\"; \
+            mirror -Rev --parallel=2 --only-newer \
+              --exclude-glob .git* --exclude-glob .github --exclude-glob node_modules \
+              --exclude-glob '*.map' --exclude-glob README.md \
+              \"$LOCAL\" \"$REMOTE\"; \
+            bye"
+
+      - name: Mirror via FTPS
+        if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code == '0'
+        shell: bash
+        run: |
+          set -e
+          echo "🚀 FTPS mirror $LOCAL → $REMOTE"
+          lftp -u "$USER","$PASS" "$HOST" -p 21 -e "\
+            set ftp:passive-mode yes; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; \
+            set net:max-retries 5; set net:timeout 30; \
+            mkdir -p -f \"$REMOTE\"; \
+            mirror -Rev --parallel=2 --only-newer \
+              --exclude-glob .git* --exclude-glob .github --exclude-glob node_modules \
+              --exclude-glob '*.map' --exclude-glob README.md \
+              \"$LOCAL\" \"$REMOTE\"; \
+            bye"
