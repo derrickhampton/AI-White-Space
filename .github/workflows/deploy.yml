@@ -1,4 +1,5 @@
 name: Deploy to Domain.com via SFTP
+
 on:
   push:
     branches: [ "main" ]
@@ -7,33 +8,37 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout AI-White-Space
         uses: actions/checkout@v4
 
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
       - name: Deploy via SFTP
+        shell: bash
         env:
-          HOST: ${{ secrets.FTP_SERVER }}
+          HOST: ${{ secrets.FTP_SERVER }}     # e.g. 116bbd3.dcomhost.com
           USER: ${{ secrets.FTP_USERNAME }}
           PASS: ${{ secrets.FTP_PASSWORD }}
-          REMOTE: ${{ secrets.REMOTE_DIR }}
+          REMOTE: ${{ secrets.REMOTE_DIR }}   # e.g. public_html/
+          LOCAL: ./                           # change to ./dist if you build
         run: |
-          echo "Deploying AI-White-Space via SFTP → $REMOTE"
-          lftp -u "$USER","$PASS" sftp://$HOST:22 <<'LFTP_CMDS'
+          echo "Deploying AI-White-Space via SFTP → $HOST:$REMOTE"
+          lftp -u "$USER","$PASS" "sftp://$HOST:22" <<LFTP_CMDS
           set sftp:auto-confirm yes
           set net:max-retries 5
           set net:timeout 25
           set net:reconnect-interval-base 5
           set net:reconnect-interval-max 20
           mirror -Rev --parallel=2 \
-            --exclude-glob .git* \
-            --exclude-glob .github \
-            --exclude-glob node_modules \
+            --exclude-glob ".git*" \
+            --exclude-glob ".github" \
+            --exclude-glob "node_modules" \
             --exclude-glob "*.map" \
             --exclude-glob "README.md" \
-            ./ public_html/
+            "$LOCAL" "$REMOTE"
           quit
-LFTP_CMDS
