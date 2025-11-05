@@ -199,38 +199,147 @@
     border: 1px solid rgba(122,168,255,.25) !important;
     color: var(--hc-text) !important;
   }
+
+  header{
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid rgba(122,168,255,.12);
+  backdrop-filter: blur(6px);
+  background: rgba(8,12,16,.8);
+}
+
+/* Top nav (matches contact page) */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  max-width:1100px;
+  margin:0 auto;
+}
+.brand{
+  font-weight:800; letter-spacing:.4px; margin:0;
+  background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-size: 1.15rem;
+  text-decoration:none; display:inline-block;
+}
+.nav-links a{
+  color: var(--hc-muted);
+  text-decoration:none;
+  font-weight:600;
+  padding:.4rem .7rem;
+  border-radius:10px;
+  border:1px solid transparent;
+}
+.nav-links a:hover{
+  color: var(--hc-text);
+  border-color: rgba(122,168,255,.25);
+  background: rgba(122,168,255,.08);
+}
+/* Match contact page header look */
+.hc-navbar{
+  background: rgba(8,12,16,.8) !important;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(122,168,255,.12);
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+}
+
+/* Layout parity with contact page */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+/* Gradient brand text like contact page */
+.brand{
+  font-weight:800;
+  letter-spacing:.4px;
+  background: linear-gradient(90deg, var(--hc-accent, #61f2d3), var(--hc-accent-2, #7aa8ff));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-size: 1.15rem;
+  text-decoration:none;
+}
+
+/* Nav links styling parity */
+.nav-links .nav-link{
+  color: var(--hc-muted, #9fb0bf) !important;
+  font-weight:600;
+  border-radius:10px;
+  border:1px solid transparent;
+  padding:.4rem .7rem;
+}
+.nav-links .nav-link:hover,
+.nav-links .nav-link:focus{
+  color: var(--hc-text, #e6eef5) !important;
+  background: rgba(122,168,255,.08);
+  border-color: rgba(122,168,255,.25);
+  text-decoration:none;
+}
+
+/* Tidy PayPal image so it visually fits the nav */
+.donate-img{
+  height: 32px;
+  width: auto;
+  border-radius: 8px;
+  filter: saturate(0.9) brightness(0.95);
+  transition: transform .12s ease, box-shadow .2s ease;
+}
+.donate-img:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(97,242,211,.15); }
+
 </style>
 
 </head>
 
 <body class="matrix-container">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#!">AI Hidden-Character Highlighter</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-              aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-          <li class="nav-item">
-            <form action="https://www.paypal.com/donate" style="margin-top:8px;" method="post" target="_top">
-              <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
-              <input type="hidden" name="no_recurring" value="0" />
-              <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
-              <input type="hidden" name="currency_code" value="USD" />
-              <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                     name="submit" title="PayPal - The safer, easier way to pay online!"
-                     alt="Donate with PayPal button" />
-              <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-            </form>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
-        </ul>
-      </div>
+  <nav class="navbar navbar-expand-lg navbar-dark hc-navbar">
+  <div class="container topbar">
+    <!-- Brand now links home and matches contact page style -->
+    <a class="navbar-brand brand" href="/" aria-label="Go to HiddenChars home">
+      HiddenChars
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/contact.html">Contact</a>
+        </li>
+
+        <!-- Donate (kept, styled to match) -->
+        <li class="nav-item d-flex align-items-center ms-lg-2">
+          <form action="https://www.paypal.com/donate" method="post" target="_top" class="m-0">
+            <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+            <input type="hidden" name="no_recurring" value="0" />
+            <input type="hidden" name="item_name"
+                   value="If you find this tool helpful, please consider a small donation via PayPal" />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="image"
+                   class="donate-img"
+                   src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                   name="submit"
+                   title="Donate via PayPal"
+                   alt="Donate with PayPal button" />
+            <img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+          </form>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Hero (matches section style with overlay) -->
   <header class="hero"></header>
