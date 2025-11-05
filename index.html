@@ -6,8 +6,7 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KM1Q88NYM3');
+    gtag('js', new Date()); gtag('config', 'G-KM1Q88NYM3');
   </script>
 
   <meta charset="utf-8" />
@@ -19,10 +18,10 @@
   <link rel="canonical" href="http://www.hiddenchars.com//this-page">
   <title>AI Hidden-Character Highlighter</title>
 
-  <!-- Favicon -->
+  <!-- Favicon-->
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 
-  <!-- Core theme CSS (includes Bootstrap) -->
+  <!-- Your theme CSS (includes Bootstrap) -->
   <link href="css/styles.css" rel="stylesheet" />
 
   <!-- Tech-forward fonts -->
@@ -32,50 +31,84 @@
   <style>
     :root{
       --hc-bg:#0b0f13;
-      --hc-card:#0f141a;
-      --hc-accent:#61f2d3;         /* neon mint */
-      --hc-accent-2:#7aa8ff;       /* cool blue */
+      --hc-surface:#0f141a;
+      --hc-accent:#61f2d3;      /* neon mint */
+      --hc-accent-2:#7aa8ff;    /* cool blue */
       --hc-text:#e6eef5;
       --hc-muted:#9fb0bf;
       --hc-border:rgba(97,242,211,.35);
       --hc-shadow:0 10px 30px rgba(15, 204, 170, .08);
     }
 
-    /* Matrix canvas container */
-    .matrix-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-      z-index: -1000;
-    }
-    .matrix-container canvas {
-      display: block;
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
-
-    body{
-      padding-top: 2rem;
+    html{ scroll-behavior:smooth; }
+    body.matrix-container{
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--hc-text);
-      background: var(--hc-bg);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(97,242,211,.08), transparent 50%),
+        radial-gradient(1000px 500px at 85% 110%, rgba(122,168,255,.06), transparent 50%),
+        linear-gradient(180deg, var(--hc-bg), var(--hc-bg));
+      padding-top: 2rem;
+      overflow-y:auto;   /* ensure vertical scroll */
+      overflow-x:clip;
+      min-height:100vh;
     }
 
-    /* Navbar / brand */
+    /* Navbar */
     .navbar, .bg-dark{
-      background: rgba(8,12,16,.85)!important;
+      background: rgba(8,12,16,.9)!important;
       backdrop-filter: blur(6px);
     }
-    .navbar .navbar-brand{ font-weight:800; letter-spacing:.5px; }
+    .navbar .navbar-brand{ font-weight:800; letter-spacing:.5px; color:var(--hc-accent)!important; }
     .navbar .nav-link{ color:var(--hc-muted)!important; }
     .navbar .nav-link.active{ color:var(--hc-accent)!important; }
 
-    /* Cyber card */
+    /* Section shells (all sections match) */
+    .section-shell{
+      position:relative;
+      padding: 3rem 0;
+      background:
+        linear-gradient(180deg, rgba(18,24,31,.96), rgba(12,17,23,.96));
+      border-top:1px solid rgba(122,168,255,.12);
+      border-bottom:1px solid rgba(97,242,211,.12);
+    }
+    /* Optional soft highlight sweep */
+    .section-shell::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(800px 300px at 10% 0%, rgba(97,242,211,.08), transparent 50%),
+        radial-gradient(800px 300px at 90% 100%, rgba(122,168,255,.07), transparent 55%);
+      pointer-events:none;
+    }
+
+    /* Updated hero overlay */
+  .hero {
+    background-image: url('assets/containerImage.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 260px;
+    position: relative;
+  }
+
+  /* Transparent color overlay with neon hue blend */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(97, 242, 211, 0.12) 0%,     /* mint tint at top */
+        rgba(122, 168, 255, 0.10) 35%,   /* soft blue mid */
+        rgba(11, 15, 19, 0.65) 100%      /* fade into dark base */
+      );
+    pointer-events: none;
+    mix-blend-mode: lighten; /* smooths with background image */
+  }
+    /* Card glass + glow */
     .tech-card{
-      background: linear-gradient(180deg, rgba(18,24,31,.88), rgba(12,17,23,.88));
+      background: linear-gradient(180deg, rgba(18,24,31,.9), rgba(12,17,23,.9));
       border:1px solid var(--hc-border);
       border-radius:16px;
       box-shadow: var(--hc-shadow);
@@ -86,13 +119,12 @@
       content:"";
       position:absolute; inset:-2px;
       background: conic-gradient(from 180deg at 50% 50%,
-        transparent 0 35%,
-        rgba(122,168,255,.25) 45%,
-        transparent 55% 70%,
-        rgba(97,242,211,.25) 80%,
+        transparent 0 35%, rgba(122,168,255,.22) 45%,
+        transparent 55% 70%, rgba(97,242,211,.22) 80%,
         transparent 100%);
-      filter: blur(18px); opacity:.5; pointer-events:none;
+      filter: blur(18px); opacity:.55; pointer-events:none;
     }
+
     .headline{
       font-weight:800; letter-spacing:.4px; margin-bottom:.75rem;
       background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
@@ -104,17 +136,16 @@
     .mono{
       font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
-    textarea#input, #output{
-      background: #0b1117;
-      color: var(--hc-text);
+    #input, #output{
+      background:#0b1117; color:var(--hc-text);
       border:1px solid rgba(122,168,255,.25);
       border-radius:12px;
     }
-    #output{ min-height:200px; white-space: pre-wrap; word-wrap: break-word; padding: .5rem; }
     #input{ height:200px; }
+    #output{ min-height:200px; white-space:pre-wrap; word-wrap:break-word; padding:.5rem; }
     .highlight{ background: rgba(97,242,211,.25); outline:1px dashed var(--hc-accent); }
 
-    /* Neo button */
+    /* Button */
     .btn-neo{
       --bs-btn-color:#061015;
       --bs-btn-bg: var(--hc-accent);
@@ -126,60 +157,65 @@
       font-weight:600; letter-spacing:.3px; border-radius:10px;
     }
     .btn-neo:hover{ transform: translateY(-1px); box-shadow:0 10px 24px rgba(97,242,211,.22); }
+    .btn-neo:focus{ box-shadow:0 0 0 .2rem rgba(97,242,211,.28); }
 
-    header{ position: relative; z-index: 0; }
-    .container-slide-over{ margin-top:-110px; position:relative; z-index:1; }
-    header.bg-image-full{ filter:saturate(1.05) contrast(1.05); }
+    /* Spacer image now matches sections (kept for visual break) */
+    .bg-image-full{
+      background-size:cover; background-position:center;
+      position:relative;
+    }
+    .bg-image-full::before{
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(11,15,19,.65), rgba(11,15,19,.75)),
+        radial-gradient(800px 300px at 20% 0%, rgba(97,242,211,.10), transparent 55%),
+        radial-gradient(900px 350px at 80% 100%, rgba(122,168,255,.10), transparent 60%);
+      pointer-events:none;
+    }
 
-    /* Modal overlays */
-    #modal.modal-overlay,
-    #donateModal.modal-overlay{
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      align-items: center;
-      justify-content: center;
-      z-index: 1050;
-    }
-    #modal.modal-overlay.show,
-    #donateModal.modal-overlay.show{ display:flex; }
-    #modal .content,
-    #donateModal .content{
-      background: #ffffff;
-      padding: 1.5rem;
-      border-radius: .5rem;
-      max-width: 90%;
-      box-shadow: 0 2px 10px rgba(0,0,0,.3);
-      position: relative;
-      z-index: 1060;
-      color:#0b0f13;
-    }
-    #modal .close,
-    #donateModal .close{
-      float: right; cursor: pointer; font-size: 1.2rem;
-    }
+    /* Footer */
+    footer.bg-dark{ background:#0b0f13!important; }
   </style>
+  <style>
+  /* Make all inner sections solid */
+  .section-shell{
+    background: var(--hc-surface) !important; /* solid, no gradient */
+    border-top: 1px solid rgba(122,168,255,.12);
+    border-bottom: 1px solid rgba(97,242,211,.12);
+  }
+  .section-shell::before{ content: none !important; }
+
+  /* Make cards solid too (no glass/gradient glow) */
+  .tech-card{
+    background: var(--hc-surface) !important;
+    border: 1px solid var(--hc-border);
+    box-shadow: var(--hc-shadow);
+  }
+  .tech-card:before{ content: none !important; }
+
+  /* Keep inputs readable on solid background */
+  #input, #output{
+    background: #0b1117 !important;
+    border: 1px solid rgba(122,168,255,.25) !important;
+    color: var(--hc-text) !important;
+  }
+</style>
+
 </head>
 
 <body class="matrix-container">
-  <canvas id="matrix"></canvas>
-
-  <!-- Responsive navbar -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand" href="#!">AI Hidden-Character Highlighter</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
           <li class="nav-item">
-            <form action="https://www.paypal.com/donate" style="margin-top: 8px;" method="post" target="_top">
+            <form action="https://www.paypal.com/donate" style="margin-top:8px;" method="post" target="_top">
               <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
               <input type="hidden" name="no_recurring" value="0" />
               <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
@@ -196,22 +232,21 @@
     </div>
   </nav>
 
-  <!-- Header -->
-  <header class="py-5 bg-image-full" style="background-image: url('assets/containerImage.jpeg'); min-height: 250px;">
-  </header>
+  <!-- Hero (matches section style with overlay) -->
+  <header class="hero"></header>
 
-  <!-- HiddenChars Tech Intro -->
-  <section id="hiddenchars-intro" class="py-4">
+  <!-- Intro (section style #1) -->
+  <section id="hiddenchars-intro" class="section-shell">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-9 col-lg-10">
-          <div class="tech-card border-0 shadow-sm position-relative">
+          <div class="tech-card border-0 shadow-sm">
             <div class="card-body p-4 p-md-5">
               <h2 class="headline h3">What is HiddenChars?</h2>
               <p class="lead-muted mb-0">
-                <strong>HiddenChars</strong> detects and removes invisible characters left by AI—zero-width spaces,
-                non-breaking spaces, word-joiners, and more. Paste your text, scan to spotlight the hidden bits,
-                then download a clean copy for reliable copying, formatting, and search.
+                <strong>HiddenChars</strong> finds and removes invisible characters often left by AI—like zero-width spaces,
+                non-breaking spaces, and word joiners. Paste your text, scan to highlight anything hidden, then download a
+                clean version for reliable copying, formatting, and search.
               </p>
             </div>
           </div>
@@ -220,58 +255,57 @@
     </div>
   </section>
 
-  <!-- Content section -->
-  <section class="py-5">
-    <div class="container container-slide-over my-5">
+  <!-- Tool (section style #2 — same shell for full consistency) -->
+  <section class="section-shell">
+    <div class="container my-3 my-md-4">
       <div class="row justify-content-center">
-        <!-- HIGHLIGHTER TOOL -->
-        <h2 class="mb-3 headline h4">Enter AI-generated Text</h2>
-        <textarea id="input" class="form-control mono mb-3" placeholder="Paste text here…"></textarea>
-        <div id="output" class="mono mb-3"></div>
-        <button id="downloadBtn" class="btn btn-neo">
-          Remove Hidden AI Characters &amp; Download .txt
-        </button>
+        <div class="col-xl-9 col-lg-10">
+          <h2 class="mb-3 headline h4">Enter AI-generated Text</h2>
+          <textarea id="input" class="form-control mono mb-3" placeholder="Paste text here…"></textarea>
+          <div id="output" class="mono mb-3"></div>
+          <button id="downloadBtn" class="btn btn-neo">Remove Hidden AI Characters &amp; Download .txt</button>
 
-        <!-- MODAL -->
-        <div id="modal" class="modal-overlay">
-          <div class="content position-relative">
-            <span class="close">&times;</span>
-            <h5>Hidden Whitespace Found</h5>
-            <ul id="foundList"></ul>
+          <!-- MODAL -->
+          <div id="modal" class="modal-overlay" style="display:none;">
+            <div class="content position-relative">
+              <span class="close">&times;</span>
+              <h5>Hidden Whitespace Found</h5>
+              <ul id="foundList"></ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Donate Modal -->
-    <div id="donateModal" class="modal-overlay">
-      <div class="content position-relative">
-        <span class="close">&times;</span>
-        <h5>Please Support Us</h5>
-        <span>If you find this tool helpful, please consider a small donation via PayPal</span>
-        <form action="https://www.paypal.com/donate" method="post" target="_top">
-          <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
-          <input type="hidden" name="no_recurring" value="0" />
-          <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
-          <input type="hidden" name="currency_code" value="USD" />
-          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                 name="submit" title="PayPal - The safer, easier way to pay online!"
-                 alt="Donate with PayPal button" />
-          <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-        </form>
+      <!-- Donate Modal (hidden by default) -->
+      <div id="donateModal" class="modal-overlay" style="display:none;">
+        <div class="content position-relative">
+          <span class="close">&times;</span>
+          <h5>Please Support Us</h5>
+          <span>If you find this tool helpful, please consider a small donation via PayPal</span>
+          <form action="https://www.paypal.com/donate" method="post" target="_top">
+            <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+            <input type="hidden" name="no_recurring" value="0" />
+            <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                   name="submit" title="PayPal - The safer, easier way to pay online!"
+                   alt="Donate with PayPal button" />
+            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+          </form>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Image element - spacer demo -->
-  <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-    <div style="height: 20rem"></div>
+  <!-- Visual spacer (still matches palette) -->
+  <div class="bg-image-full" style="background-image:url('https://source.unsplash.com/4ulffa6qoKA/1200x800');">
+    <div style="height: 18rem;"></div>
   </div>
 
-  <!-- Content section -->
-  <section class="py-5">
-    <div class="container my-5">
-      <!-- Optional content -->
+  <!-- Optional extra section (same shell for consistency) -->
+  <section class="section-shell">
+    <div class="container my-3 my-md-4">
+      <!-- Add any future content here -->
     </div>
   </section>
 
@@ -282,49 +316,9 @@
     </div>
   </footer>
 
-  <!-- Bootstrap core JS -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core theme JS -->
-  <!-- <script src="js/scripts.js"></script> -->
+  <!-- Your scripts -->
   <script src="js/scripts.obfuscated.js"></script>
-
-  <script>
-    // Matrix background
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロゴゾドボポヴ0123456789';
-    const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(0);
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#0F0';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        ctx.fillText(text, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-    setInterval(draw, 1000 / 30);
-  </script>
 </body>
 </html>
