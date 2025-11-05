@@ -20,7 +20,7 @@ jobs:
 
       # Deploy the / (or /dist) folder to Domain.com public_html
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: "116bbd3.dcomhost.com"
           username: "git_user_deploy"
