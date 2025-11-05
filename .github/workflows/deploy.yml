@@ -22,13 +22,13 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4
         with:
-          server: ${{ 116bbd3.dcomhost.com }}
-          username: ${{ git_user_deploy }}
-          password: ${{ w36C9kC#9VAyT22 }}
+          server: "116bbd3.dcomhost.com"
+          username: "git_user_deploy"
+          password: "w36C9kC#9VAyT22"
           protocol: ftp
-          port: ${{ secrets.FTP_PORT || 21 }}
+          port:  "21"
           local-dir: ./        # change to ./dist if you build
-          server-dir: ${{ secrets.REMOTE_DIR || '/' }}
+          server-dir: "/"
           exclude: |
             **/.git*
             **/.github/**
