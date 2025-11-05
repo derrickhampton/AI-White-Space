@@ -1,44 +1,121 @@
-name: Deploy to Domain.com via SFTP
+name: Deploy to Domain.com (auto SFTP→FTPS)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]   # change if different
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      HOST: ${{ secrets.FTP_SERVER }}      # e.g. 116bbd3.dcomhost.com
+      USER: ${{ secrets.FTP_USERNAME }}
+      PASS: ${{ secrets.FTP_PASSWORD }}
+      REMOTE: ${{ secrets.REMOTE_DIR }}    # e.g. public_html/
+      LOCAL: ./                             # change to ./dist if you build
     steps:
-      - name: Checkout AI-White-Space
+      - name: Checkout
         uses: actions/checkout@v4
+
+      # Uncomment if you have a build (and set LOCAL=./dist)
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "20"
+      # - name: Install & Build
+      #   run: |
+      #     npm ci
+      #     npm run build
+      #     echo "Using build output in ./dist"
 
       - name: Install lftp
         run: |
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Deploy via SFTP
+      - name: Validate inputs (fail fast if missing)
         shell: bash
-        env:
-          HOST: ${{ secrets.FTP_SERVER }}     # e.g. 116bbd3.dcomhost.com
-          USER: ${{ secrets.FTP_USERNAME }}
-          PASS: ${{ secrets.FTP_PASSWORD }}
-          REMOTE: ${{ secrets.REMOTE_DIR }}   # e.g. public_html/
-          LOCAL: ./                           # change to ./dist if you build
         run: |
-          echo "Deploying AI-White-Space via SFTP → $HOST:$REMOTE"
+          set -euo pipefail
+          [ -n "${HOST:-}" ]   || { echo "Missing secret: FTP_SERVER"; exit 1; }
+          [ -n "${USER:-}" ]   || { echo "Missing secret: FTP_USERNAME"; exit 1; }
+          [ -n "${PASS:-}" ]   || { echo "Missing secret: FTP_PASSWORD"; exit 1; }
+          [ -n "${REMOTE:-}" ] || { echo "Missing secret: REMOTE_DIR (e.g. public_html/)"; exit 1; }
+          [ -d "${LOCAL}" ]    || { echo "Local dir ${LOCAL} not found"; exit 1; }
+          # normalize remote path to end with /
+          case "$REMOTE" in */) ;; *) REMOTE="${REMOTE}/"; echo "Normalized REMOTE to: $REMOTE";; esac
+          echo "Target host: $HOST"
+          echo "Remote path: $REMOTE"
+          echo "Local path : $LOCAL"
+
+      - name: Connectivity test (SFTP first, FTPS fallback)
+        id: probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROTO=""
+          echo "🔎 Testing SFTP on $HOST:22 ..."
+          if lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 15; ls -l \"$REMOTE\"; bye" ; then
+            PROTO="SFTP"
+          else
+            echo "SFTP test failed; trying FTPS (explicit TLS) on port 21 ..."
+            if lftp -u "$USER","$PASS" "$HOST" -p 21 -e "set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ftp:passive-mode yes; set ssl:verify-certificate no; set net:timeout 15; ls -l \"$REMOTE\"; bye" ; then
+              PROTO="FTPS"
+            fi
+          fi
+          if [ -z "$PROTO" ]; then
+            echo "::error::Could not reach $HOST via SFTP:22 or FTPS:21. Check protocol availability on your plan, firewall/rate limits, and credentials."
+            exit 1
+          fi
+          echo "proto=$PROTO" >> "$GITHUB_OUTPUT"
+          echo "✅ Using $PROTO"
+
+      - name: Deploy (SFTP)
+        if: steps.probe.outputs.proto == 'SFTP'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🚀 Deploying via SFTP → $HOST:$REMOTE"
           lftp -u "$USER","$PASS" "sftp://$HOST:22" <<LFTP_CMDS
           set sftp:auto-confirm yes
           set net:max-retries 5
           set net:timeout 25
           set net:reconnect-interval-base 5
           set net:reconnect-interval-max 20
-          mirror -Rev --parallel=2 \
+          mkdir -p -f "$REMOTE"
+          mirror -Rev --parallel=2 --only-newer \
             --exclude-glob ".git*" \
             --exclude-glob ".github" \
             --exclude-glob "node_modules" \
             --exclude-glob "*.map" \
             --exclude-glob "README.md" \
             "$LOCAL" "$REMOTE"
-          quit
+          bye
+LFTP_CMDS
+
+      - name: Deploy (FTPS explicit TLS)
+        if: steps.probe.outputs.proto == 'FTPS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🚀 Deploying via FTPS (explicit TLS) → $HOST:$REMOTE"
+          lftp -u "$USER","$PASS" "$HOST" -p 21 <<LFTP_CMDS
+          set ssl:verify-certificate no
+          set ftp:ssl-force yes
+          set ftp:ssl-protect-data yes
+          set ftp:passive-mode yes
+          set net:max-retries 5
+          set net:timeout 25
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-max 20
+          mkdir -p -f "$REMOTE"
+          mirror -Rev --parallel=2 --only-newer \
+            --exclude-glob ".git*" \
+            --exclude-glob ".github" \
+            --exclude-glob "node_modules" \
+            --exclude-glob "*.map" \
+            --exclude-glob "README.md" \
+            "$LOCAL" "$REMOTE"
+          bye
+LFTP_CMDS
