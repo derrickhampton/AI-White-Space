@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout AI-White-Space
         uses: actions/checkout@v4
 
       # If you build (e.g., npm run build), add those steps here
