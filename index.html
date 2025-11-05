@@ -26,6 +26,25 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
+        /* Container for the effect */
+    .matrix-container {
+      position: relative;
+      width: 100%;
+      height: 100%;         /* adjust to your needs */
+      background: #000;
+      overflow: hidden;
+      z-index: -1000;
+    }
+
+    /* Canvas covers entire container */
+    .matrix-container canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
         body {
             padding-top: 2rem;
         }
@@ -147,10 +166,12 @@
     </style>
 </head>
 
-<body>
+<body class="matrix-container">
+    <canvas id="matrix"></canvas>
     <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        
+        <div class="container ">
             <a class="navbar-brand" href="#!">AI Hidden-Character Highlighter</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -173,15 +194,18 @@
                     <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
                 </ul>
             </div>
+            
         </div>
     </nav>
     <!-- Header - set the background image for the header in the line below-->
-    <header class="py-5 bg-image-full" style="background-image: url('assets/containerImage.png'); min-height: 250px;;">
+    <header class="py-5 bg-image-full" style="background-image: url('assets/containerImage.jpeg'); min-height: 250px;;">
 
     </header>
     <!-- Content section-->
-    <section class="py-5">
-        <div class="container container-slide-over my-5">
+    <section class="py-5 ">
+        
+        <div class="container container-slide-over my-5 ">
+            
             <div class="row justify-content-center">
                 <!-- HIGHIGHTER TOOL -->
                 <h2 class="mb-3">Enter AI-generated Text</h2>
@@ -245,6 +269,52 @@
     <!-- Core theme JS-->
     <!-- <script src="js/scripts.js"></script> -->
     <script src="js/scripts.obfuscated.js"></script>
+    <script>
+        // Get canvas & set full resolution
+        const canvas = document.getElementById('matrix');
+        const ctx    = canvas.getContext('2d');
+    
+        function resize() {
+          canvas.width  = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+    
+        // Characters — you can customize this string
+        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロゴゾドボポヴ0123456789';
+        const fontSize = 16;
+        const columns = Math.floor(canvas.width / fontSize);
+    
+        // Array of drops — one per column
+        const drops = Array(columns).fill(0);
+    
+        function draw() {
+          // translucent black to create fade‐out trail
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+          ctx.fillStyle = '#0F0';             // green text
+          ctx.font = fontSize + 'px monospace';
+    
+          for (let i = 0; i < drops.length; i++) {
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+    
+            ctx.fillText(text, x, y);
+    
+            // reset drop when off screen
+            if (y > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+          }
+        }
+    
+        // 30 frames per second
+        setInterval(draw, 1000 / 30);
+      </script>
 </body>
 
 </html>
