@@ -1,320 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KM1Q88NYM3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KM1Q88NYM3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KM1Q88NYM3');
+  </script>
 
-  gtag('config', 'G-KM1Q88NYM3');
-</script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="keywords"
-        content="hidden characters, zero-width space detector, AI text highlighter, zero-width non-joiner, zero-width joiner, word joiner, thin space highlighter, hair space finder, non-breaking space detector, invisible character remover, AI hidden whitespace tool, text sanitizer, invisible delimiter detector, security watermark scanner, unicode whitespace highlighter, AI content integrity, text formatting tool, hidden-char viewer, invisible whitespace analyzer, zero-width character remover" />
-    <meta name="description"
-        content="AI Hidden Character Highlighter detects and reveals invisible whitespace (zero-width spaces, NBSPs, word joiners, etc.) in AI-generated text, highlighting and replacing them with visible markers to ensure text integrity and readability." />
-    <meta name="author" content="Derrick J. Hampton" />
-    <meta name="robots" content="index,follow">
-    <link rel="canonical" href="http://www.hiddenchars.com//this-page">
-    <title>AI Hidden-Character Highlighter</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
-    <style>
-        /* Container for the effect */
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="hidden characters, zero-width space detector, AI text highlighter, zero-width non-joiner, zero-width joiner, word joiner, thin space highlighter, hair space finder, non-breaking space detector, invisible character remover, AI hidden whitespace tool, text sanitizer, invisible delimiter detector, security watermark scanner, unicode whitespace highlighter, AI content integrity, text formatting tool, hidden-char viewer, invisible whitespace analyzer, zero-width character remover" />
+  <meta name="description" content="AI Hidden Character Highlighter detects and reveals invisible whitespace (zero-width spaces, NBSPs, word joiners, etc.) in AI-generated text, highlighting and replacing them with visible markers to ensure text integrity and readability." />
+  <meta name="author" content="Derrick J. Hampton" />
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="http://www.hiddenchars.com//this-page">
+  <title>AI Hidden-Character Highlighter</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Core theme CSS (includes Bootstrap) -->
+  <link href="css/styles.css" rel="stylesheet" />
+
+  <!-- Tech-forward fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --hc-bg:#0b0f13;
+      --hc-card:#0f141a;
+      --hc-accent:#61f2d3;         /* neon mint */
+      --hc-accent-2:#7aa8ff;       /* cool blue */
+      --hc-text:#e6eef5;
+      --hc-muted:#9fb0bf;
+      --hc-border:rgba(97,242,211,.35);
+      --hc-shadow:0 10px 30px rgba(15, 204, 170, .08);
+    }
+
+    /* Matrix canvas container */
     .matrix-container {
       position: relative;
       width: 100%;
-      height: 100%;         /* adjust to your needs */
+      height: 100%;
       background: #000;
       overflow: hidden;
       z-index: -1000;
     }
-
-    /* Canvas covers entire container */
     .matrix-container canvas {
       display: block;
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
     }
-        body {
-            padding-top: 2rem;
-        }
 
-        /* Metro‐style tile cards */
-        .metro-card {
-            border: none;
-            color: #fff;
-            text-align: center;
-            padding: 2rem;
-            border-radius: .5rem;
-            transition: transform .2s;
-        }
+    body{
+      padding-top: 2rem;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--hc-text);
+      background: var(--hc-bg);
+    }
 
-        .metro-card:hover {
-            transform: scale(1.05);
-        }
+    /* Navbar / brand */
+    .navbar, .bg-dark{
+      background: rgba(8,12,16,.85)!important;
+      backdrop-filter: blur(6px);
+    }
+    .navbar .navbar-brand{ font-weight:800; letter-spacing:.5px; }
+    .navbar .nav-link{ color:var(--hc-muted)!important; }
+    .navbar .nav-link.active{ color:var(--hc-accent)!important; }
 
-        #input {
-            height: 200px;
-            overflow-y: auto;
-        }
+    /* Cyber card */
+    .tech-card{
+      background: linear-gradient(180deg, rgba(18,24,31,.88), rgba(12,17,23,.88));
+      border:1px solid var(--hc-border);
+      border-radius:16px;
+      box-shadow: var(--hc-shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .tech-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: conic-gradient(from 180deg at 50% 50%,
+        transparent 0 35%,
+        rgba(122,168,255,.25) 45%,
+        transparent 55% 70%,
+        rgba(97,242,211,.25) 80%,
+        transparent 100%);
+      filter: blur(18px); opacity:.5; pointer-events:none;
+    }
+    .headline{
+      font-weight:800; letter-spacing:.4px; margin-bottom:.75rem;
+      background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lead-muted{ color:var(--hc-muted); }
 
-        /* Highlighter */
-        #output {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            border: 1px solid #ccc;
-            padding: .5rem;
-            background: #f9f9f9;
-            height: 200px;
-            overflow-y: auto;
-            font-family: monospace;
-        }
+    /* Inputs + monospace output */
+    .mono{
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    textarea#input, #output{
+      background: #0b1117;
+      color: var(--hc-text);
+      border:1px solid rgba(122,168,255,.25);
+      border-radius:12px;
+    }
+    #output{ min-height:200px; white-space: pre-wrap; word-wrap: break-word; padding: .5rem; }
+    #input{ height:200px; }
+    .highlight{ background: rgba(97,242,211,.25); outline:1px dashed var(--hc-accent); }
 
-        .highlight {
-            background: #ffeb3b;
-        }
+    /* Neo button */
+    .btn-neo{
+      --bs-btn-color:#061015;
+      --bs-btn-bg: var(--hc-accent);
+      --bs-btn-border-color: var(--hc-accent);
+      --bs-btn-hover-bg: #48e6c3;
+      --bs-btn-hover-border-color:#48e6c3;
+      box-shadow: 0 0 0 0 rgba(97,242,211,.45);
+      transition: transform .12s ease, box-shadow .2s ease;
+      font-weight:600; letter-spacing:.3px; border-radius:10px;
+    }
+    .btn-neo:hover{ transform: translateY(-1px); box-shadow:0 10px 24px rgba(97,242,211,.22); }
 
-        /* Modal centered */
-        /* #modal {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,.6);
-          align-items: center;
-          justify-content: center;
-        }*/
-        #modal.modal-overlay {
-            display: none;
-            /* hidden by default */
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .6);
-            align-items: center;
-            justify-content: center;
-        }
+    header{ position: relative; z-index: 0; }
+    .container-slide-over{ margin-top:-110px; position:relative; z-index:1; }
+    header.bg-image-full{ filter:saturate(1.05) contrast(1.05); }
 
-        #modal.modal-overlay.show {
-            display: flex;
-            /* only when we add “show” */
-        }
-
-        #modal .content {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: .5rem;
-            max-width: 90%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
-        }
-
-        #modal .close {
-            float: right;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        header {
-            position: relative;
-            z-index: 0;
-        }
-
-        /* Pull the container up into the header */
-        .container-slide-over {
-            margin-top: -100px;
-            /* adjust value as needed */
-            position: relative;
-            z-index: 1;
-        }
-
-       /* Overlay: dark, semi-transparent backdrop */
-#donateModal.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8); /* darker backdrop */
-  align-items: center;
-  justify-content: center;
-  z-index: 1050;
-}
-
-/* Show */
-#donateModal.modal-overlay.show {
-  display: flex;
-}
-
-/* Content box: solid white background */
-#donateModal .content {
-  background-color: #ffffff;   /* solid white */
-  padding: 1.5rem;
-  border-radius: .5rem;
-  max-width: 90%;
-  box-shadow: 0 2px 10px rgba(0,0,0,.3);
-  position: relative;
-  z-index: 1060;               /* above overlay */
-}
-
-        /* close button styling inherited from existing rules */
-    </style>
+    /* Modal overlays */
+    #modal.modal-overlay,
+    #donateModal.modal-overlay{
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 1050;
+    }
+    #modal.modal-overlay.show,
+    #donateModal.modal-overlay.show{ display:flex; }
+    #modal .content,
+    #donateModal .content{
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: .5rem;
+      max-width: 90%;
+      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+      position: relative;
+      z-index: 1060;
+      color:#0b0f13;
+    }
+    #modal .close,
+    #donateModal .close{
+      float: right; cursor: pointer; font-size: 1.2rem;
+    }
+  </style>
 </head>
 
 <body class="matrix-container">
-    <canvas id="matrix"></canvas>
-    <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-        
-        <div class="container ">
-            <a class="navbar-brand" href="#!">AI Hidden-Character Highlighter</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li class="nav-item">
-                        <form action="https://www.paypal.com/donate" style="margin-top: 8px;" method="post" target="_top">
-                        <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
-                        <input type="hidden" name="no_recurring" value="0" />
-                        <input type="hidden" name="item_name"
-                            value="If you find this tool helpful, please consider a small donation via PayPal" />
-                        <input type="hidden" name="currency_code" value="USD" />
-                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                            name="submit" title="PayPal - The safer, easier way to pay online!"
-                            alt="Donate with PayPal button" />
-                        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                    </form></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                </ul>
-            </div>
-            
-        </div>
-    </nav>
-    <!-- Header - set the background image for the header in the line below-->
-    <header class="py-5 bg-image-full" style="background-image: url('assets/containerImage.jpeg'); min-height: 250px;;">
+  <canvas id="matrix"></canvas>
 
-    </header>
-    <!-- Content section-->
-    <section class="py-5 ">
-        
-        <div class="container container-slide-over my-5 ">
-            
-            <div class="row justify-content-center">
-                <!-- HIGHIGHTER TOOL -->
-                <h2 class="mb-3">Enter AI-generated Text</h2>
-                <!--<div id="message" class="mb-2 text-danger fw-bold"></div>-->
-                <textarea id="input" class="form-control mb-3" placeholder="Paste text here…"></textarea>
-                <div id="output" class="mb-3"></div>
-                <button id="downloadBtn" class="btn btn-primary">
-                    Remove Hidden AI Characters and Download as .txt
-                </button>
-                <!-- MODAL -->
-                <div id="modal" class="modal-overlay">
-                    <div class="content position-relative">
-                        <span class="close">&times;</span>
-                        <h5>Hidden Whitespace Found</h5>
-                        <ul id="foundList"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-         <!-- Donate Modal -->
-    <div id="donateModal" class="modal-overlay">
-        <div class="content position-relative">
-            <span class="close">&times;</span>
-            <h5>Please Support Us</h5>
-            <span>If you find this tool helpful, please consider a small donation via PayPal</span>
-            <form action="https://www.paypal.com/donate" method="post" target="_top">
-                <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
-                <input type="hidden" name="no_recurring" value="0" />
-                <input type="hidden" name="item_name"
-                    value="If you find this tool helpful, please consider a small donation via PayPal" />
-                <input type="hidden" name="currency_code" value="USD" />
-                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
-                    name="submit" title="PayPal - The safer, easier way to pay online!"
-                    alt="Donate with PayPal button" />
-                <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+  <!-- Responsive navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#!">AI Hidden-Character Highlighter</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+          <li class="nav-item">
+            <form action="https://www.paypal.com/donate" style="margin-top: 8px;" method="post" target="_top">
+              <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+              <input type="hidden" name="no_recurring" value="0" />
+              <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
+              <input type="hidden" name="currency_code" value="USD" />
+              <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                     name="submit" title="PayPal - The safer, easier way to pay online!"
+                     alt="Donate with PayPal button" />
+              <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
             </form>
-
-        </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+        </ul>
+      </div>
     </div>
-    </section>
-   
-    <!-- Image element - set the background image for the header in the line below-->
-    <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
-        <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
-        <div style="height: 20rem"></div>
-    </div>
-    <!-- Content section-->
-    <section class="py-5">
-        <div class="container my-5">
+  </nav>
 
+  <!-- Header -->
+  <header class="py-5 bg-image-full" style="background-image: url('assets/containerImage.jpeg'); min-height: 250px;">
+  </header>
+
+  <!-- HiddenChars Tech Intro -->
+  <section id="hiddenchars-intro" class="py-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+          <div class="tech-card border-0 shadow-sm position-relative">
+            <div class="card-body p-4 p-md-5">
+              <h2 class="headline h3">What is HiddenChars?</h2>
+              <p class="lead-muted mb-0">
+                <strong>HiddenChars</strong> detects and removes invisible characters left by AI—zero-width spaces,
+                non-breaking spaces, word-joiners, and more. Paste your text, scan to spotlight the hidden bits,
+                then download a clean copy for reliable copying, formatting, and search.
+              </p>
+            </div>
+          </div>
         </div>
-    </section>
-    <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; 2025</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content section -->
+  <section class="py-5">
+    <div class="container container-slide-over my-5">
+      <div class="row justify-content-center">
+        <!-- HIGHLIGHTER TOOL -->
+        <h2 class="mb-3 headline h4">Enter AI-generated Text</h2>
+        <textarea id="input" class="form-control mono mb-3" placeholder="Paste text here…"></textarea>
+        <div id="output" class="mono mb-3"></div>
+        <button id="downloadBtn" class="btn btn-neo">
+          Remove Hidden AI Characters &amp; Download .txt
+        </button>
+
+        <!-- MODAL -->
+        <div id="modal" class="modal-overlay">
+          <div class="content position-relative">
+            <span class="close">&times;</span>
+            <h5>Hidden Whitespace Found</h5>
+            <ul id="foundList"></ul>
+          </div>
         </div>
-    </footer>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <!-- <script src="js/scripts.js"></script> -->
-    <script src="js/scripts.obfuscated.js"></script>
-    <script>
-        // Get canvas & set full resolution
-        const canvas = document.getElementById('matrix');
-        const ctx    = canvas.getContext('2d');
-    
-        function resize() {
-          canvas.width  = canvas.offsetWidth;
-          canvas.height = canvas.offsetHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-    
-        // Characters — you can customize this string
-        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロゴゾドボポヴ0123456789';
-        const fontSize = 16;
-        const columns = Math.floor(canvas.width / fontSize);
-    
-        // Array of drops — one per column
-        const drops = Array(columns).fill(0);
-    
-        function draw() {
-          // translucent black to create fade‐out trail
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-          ctx.fillStyle = '#0F0';             // green text
-          ctx.font = fontSize + 'px monospace';
-    
-          for (let i = 0; i < drops.length; i++) {
-            const text = chars.charAt(Math.floor(Math.random() * chars.length));
-            const x = i * fontSize;
-            const y = drops[i] * fontSize;
-    
-            ctx.fillText(text, x, y);
-    
-            // reset drop when off screen
-            if (y > canvas.height && Math.random() > 0.975) {
-              drops[i] = 0;
-            }
-            drops[i]++;
-          }
-        }
-    
-        // 30 frames per second
-        setInterval(draw, 1000 / 30);
-      </script>
+      </div>
+    </div>
+
+    <!-- Donate Modal -->
+    <div id="donateModal" class="modal-overlay">
+      <div class="content position-relative">
+        <span class="close">&times;</span>
+        <h5>Please Support Us</h5>
+        <span>If you find this tool helpful, please consider a small donation via PayPal</span>
+        <form action="https://www.paypal.com/donate" method="post" target="_top">
+          <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+          <input type="hidden" name="no_recurring" value="0" />
+          <input type="hidden" name="item_name" value="If you find this tool helpful, please consider a small donation via PayPal" />
+          <input type="hidden" name="currency_code" value="USD" />
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"
+                 name="submit" title="PayPal - The safer, easier way to pay online!"
+                 alt="Donate with PayPal button" />
+          <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image element - spacer demo -->
+  <div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+    <div style="height: 20rem"></div>
+  </div>
+
+  <!-- Content section -->
+  <section class="py-5">
+    <div class="container my-5">
+      <!-- Optional content -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; 2025</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core theme JS -->
+  <!-- <script src="js/scripts.js"></script> -->
+  <script src="js/scripts.obfuscated.js"></script>
+
+  <script>
+    // Matrix background
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロゴゾドボポヴ0123456789';
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(0);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0F0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 1000 / 30);
+  </script>
 </body>
-
 </html>
