@@ -1,8 +1,8 @@
-name: Deploy to Domain.com (diagnose + deploy)
+name: Deploy to Domain.com (diagnose + safe mirror)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]   # change if your default branch differs
   workflow_dispatch:
 
 jobs:
@@ -19,6 +19,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # If you build a site (e.g., Vite/React), uncomment and keep LOCAL as ./dist
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - name: Install & Build
+      #   run: |
+      #     npm ci
+      #     npm run build
+      #   env:
+      #     CI: true
+      # - name: Use build output
+      #   run: echo "LOCAL=./dist" >> "$GITHUB_ENV"
+
       - name: Validate inputs
         shell: bash
         run: |
@@ -29,9 +43,9 @@ jobs:
           [ -n "${REMOTE:-}" ]|| { echo "❌ Missing secret: REMOTE_DIR (e.g. public_html/)"; exit 1; }
           [ -d "${LOCAL}" ]   || { echo "❌ Local dir ${LOCAL} not found"; ls -la; exit 1; }
           case "$REMOTE" in */) ;; *) REMOTE="${REMOTE}/";; esac
-          echo "ℹ️ Host:   $HOST"
-          echo "ℹ️ Remote: $REMOTE"
-          echo "ℹ️ Local:  $LOCAL"
+          echo "ℹ️ Host   : $HOST"
+          echo "ℹ️ Remote : $REMOTE"
+          echo "ℹ️ Local  : $LOCAL"
           echo "REMOTE=$REMOTE" >> "$GITHUB_ENV"
 
       - name: Install lftp
@@ -39,6 +53,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
+      # ---- Probe SFTP (22) ----
       - name: Probe SFTP (22) - list remote
         id: sftp_list
         shell: bash
@@ -48,7 +63,8 @@ jobs:
           lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 20; ls -la \"$REMOTE\"; bye"
           echo "code=$?" >> "$GITHUB_OUTPUT"
 
-      - name: Probe FTPS (21) - list remote
+      # ---- Probe FTPS (21) if SFTP failed ----
+      - name: Probe FTPS (21, explicit TLS) - list remote
         if: steps.sftp_list.outputs.code != '0'
         id: ftps_list
         shell: bash
@@ -61,13 +77,14 @@ jobs:
       - name: Fail fast if neither protocol works
         if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code != '0'
         run: |
-          echo "::error::Cannot list $REMOTE via SFTP:22 or FTPS:21. Likely causes: wrong protocol on your plan, wrong REMOTE_DIR, or host blocking GitHub runners."
+          echo "::error::Cannot list $REMOTE via SFTP:22 or FTPS:21. Check protocol on your plan, credentials, or the remote path."
           exit 1
 
-      - name: Create marker file
+      - name: Create deploy marker
         run: |
           echo "deployed $(date -u +%FT%TZ) from AI-White-Space" > .deploy-ok
 
+      # ---- Put marker via SFTP ----
       - name: Upload marker via SFTP
         if: steps.sftp_list.outputs.code == '0'
         shell: bash
@@ -76,6 +93,7 @@ jobs:
           echo "📝 SFTP put .deploy-ok → $REMOTE"
           lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set net:timeout 30; put -O \"$REMOTE\" .deploy-ok; bye"
 
+      # ---- Put marker via FTPS ----
       - name: Upload marker via FTPS
         if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code == '0'
         shell: bash
@@ -84,33 +102,20 @@ jobs:
           echo "📝 FTPS put .deploy-ok → $REMOTE"
           lftp -u "$USER","$PASS" "$HOST" -p 21 -e "set ftp:passive-mode yes; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; set net:timeout 30; put -O \"$REMOTE\" .deploy-ok; bye"
 
-      - name: Mirror via SFTP
+      # ---- Mirror via SFTP (safe excludes, non-fatal deletes) ----
+      - name: Mirror via SFTP (safe)
         if: steps.sftp_list.outputs.code == '0'
         shell: bash
         run: |
           set -e
-          echo "🚀 SFTP mirror $LOCAL → $REMOTE"
-          lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "\
-            set sftp:auto-confirm yes; set net:max-retries 5; set net:timeout 30; \
-            mkdir -p -f \"$REMOTE\"; \
-            mirror -Rev --parallel=2 --only-newer \
-              --exclude-glob .git* --exclude-glob .github --exclude-glob node_modules \
-              --exclude-glob '*.map' --exclude-glob README.md \
-              \"$LOCAL\" \"$REMOTE\"; \
-            bye"
+          echo "🚀 SFTP mirror $LOCAL → $REMOTE (excluding host logs/stats)"
+          lftp -u "$USER","$PASS" "sftp://$HOST:22" -e "set sftp:auto-confirm yes; set cmd:fail-exit no; set net:max-retries 5; set net:timeout 30; set net:reconnect-interval-base 5; set net:reconnect-interval-max 20; mkdir -p -f \"$REMOTE\"; mirror -Rev -c --parallel=2 --only-newer --exclude-glob '.git*' --exclude-glob '.github/**' --exclude-glob 'node_modules/**' --exclude-glob '*.map' --exclude-glob 'README.md' --exclude-glob 'logs/**' --exclude-glob 'log/**' --exclude-glob '.**log/**' --exclude-glob 'awstats/**' --exclude-glob 'stats/**' --exclude-glob 'access_log*' --exclude-glob 'error_log*' --exclude-glob '.well-known/**' \"$LOCAL\" \"$REMOTE\"; bye" || true
 
-      - name: Mirror via FTPS
+      # ---- Mirror via FTPS (safe excludes, non-fatal deletes) ----
+      - name: Mirror via FTPS (safe)
         if: steps.sftp_list.outputs.code != '0' && steps.ftps_list.outputs.code == '0'
         shell: bash
         run: |
           set -e
-          echo "🚀 FTPS mirror $LOCAL → $REMOTE"
-          lftp -u "$USER","$PASS" "$HOST" -p 21 -e "\
-            set ftp:passive-mode yes; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; \
-            set net:max-retries 5; set net:timeout 30; \
-            mkdir -p -f \"$REMOTE\"; \
-            mirror -Rev --parallel=2 --only-newer \
-              --exclude-glob .git* --exclude-glob .github --exclude-glob node_modules \
-              --exclude-glob '*.map' --exclude-glob README.md \
-              \"$LOCAL\" \"$REMOTE\"; \
-            bye"
+          echo "🚀 FTPS mirror $LOCAL → $REMOTE (excluding host logs/stats)"
+          lftp -u "$USER","$PASS" "$HOST" -p 21 -e "set ssl:verify-certificate no; set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ftp:passive-mode yes; set cmd:fail-exit no; set net:max-retries 5; set net:timeout 30; set net:reconnect-interval-base 5; set net:reconnect-interval-max 20; mkdir -p -f \"$REMOTE\"; mirror -Rev -c --parallel=2 --only-newer --exclude-glob '.git*' --exclude-glob '.github/**' --exclude-glob 'node_modules/**' --exclude-glob '*.map' --exclude-glob 'README.md' --exclude-glob 'logs/**' --exclude-glob 'log/**' --exclude-glob '.**log/**' --exclude-glob 'awstats/**' --exclude-glob 'stats/**' --exclude-glob 'access_log*' --exclude-glob 'error_log*' --exclude-glob '.well-known/**' \"$LOCAL\" \"$REMOTE\"; bye" || true
