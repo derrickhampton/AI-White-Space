@@ -1,0 +1,37 @@
+name: Deploy to Domain.com via FTP
+on:
+  push:
+    branches: [ main ]   # change if your default branch differs
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # If you build (e.g., npm run build), add those steps here
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - run: npm ci && npm run build
+
+      # Deploy the / (or /dist) folder to Domain.com public_html
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ 116bbd3.dcomhost.com }}
+          username: ${{ git_user_deploy }}
+          password: ${{ w36C9kC#9VAyT22 }}
+          protocol: ftp
+          port: ${{ secrets.FTP_PORT || 21 }}
+          local-dir: ./        # change to ./dist if you build
+          server-dir: ${{ secrets.REMOTE_DIR || '/' }}
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/*.map
+            **/README.md
