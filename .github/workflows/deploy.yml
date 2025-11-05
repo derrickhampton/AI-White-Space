@@ -1,7 +1,7 @@
-name: Deploy to Domain.com via FTP
+name: Deploy to Domain.com via SFTP
 on:
   push:
-    branches: [ main ]   # change if your default branch differs
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -11,27 +11,29 @@ jobs:
       - name: Checkout AI-White-Space
         uses: actions/checkout@v4
 
-      # If you build (e.g., npm run build), add those steps here
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      # - run: npm ci && npm run build
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
 
-      # Deploy the / (or /dist) folder to Domain.com public_html
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: "116bbd3.dcomhost.com"
-          username: "git_user_deploy"
-          password: "w36C9kC#9VAyT22"
-          protocol: ftp
-          port:  "21"
-          local-dir: ./        # change to ./dist if you build
-          server-dir: "/"
-          exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/*.map
-            **/README.md
+      - name: Deploy via SFTP
+        env:
+          HOST: ${{ secrets.FTP_SERVER }}
+          USER: ${{ secrets.FTP_USERNAME }}
+          PASS: ${{ secrets.FTP_PASSWORD }}
+          REMOTE: ${{ secrets.REMOTE_DIR }}
+        run: |
+          echo "Deploying AI-White-Space via SFTP → $REMOTE"
+          lftp -u "$USER","$PASS" sftp://$HOST:22 <<'LFTP_CMDS'
+          set sftp:auto-confirm yes
+          set net:max-retries 5
+          set net:timeout 25
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-max 20
+          mirror -Rev --parallel=2 \
+            --exclude-glob .git* \
+            --exclude-glob .github \
+            --exclude-glob node_modules \
+            --exclude-glob "*.map" \
+            --exclude-glob "README.md" \
+            ./ public_html/
+          quit
+LFTP_CMDS
