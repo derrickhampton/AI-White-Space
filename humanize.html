@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KM1Q88NYM3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'G-KM1Q88NYM3');
+  </script>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="keywords" content="humanize ai text, rewrite ai text, make ai writing sound human, tone rewrite, style rewrite, ai text naturalizer, readability improver, clarity rewrite, hiddenchars humanize" />
+  <meta name="description" content="Humanize turns stiff AI-generated writing into natural, clear, human-sounding text—while preserving meaning." />
+  <meta name="author" content="Derrick J. Hampton" />
+  <meta name="robots" content="index,follow">
+
+  <meta property="og:title" content="HiddenChars — Humanize" />
+  <meta property="og:description" content="Humanize turns stiff AI-generated writing into natural, clear, human-sounding text—while preserving meaning." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.hiddenchars.com/humanize.html" />
+  <meta property="og:image" content="https://www.hiddenchars.com/assets/og-image.jpg" />
+
+  <link rel="canonical" href="https://www.hiddenchars.com/humanize.html">
+  <title>Humanize AI Text — HiddenChars</title>
+
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Your theme CSS (includes Bootstrap) -->
+  <link href="css/styles.css" rel="stylesheet" />
+
+  <!-- Tech-forward fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --hc-bg:#0b0f13;
+      --hc-surface:#0f141a;
+      --hc-accent:#61f2d3;      /* neon mint */
+      --hc-accent-2:#7aa8ff;    /* cool blue */
+      --hc-text:#e6eef5;
+      --hc-muted:#9fb0bf;
+      --hc-border:rgba(97,242,211,.35);
+      --hc-shadow:0 10px 30px rgba(15, 204, 170, .08);
+    }
+
+    html{ scroll-behavior:smooth; }
+    body.matrix-container{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--hc-text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(97,242,211,.08), transparent 50%),
+        radial-gradient(1000px 500px at 85% 110%, rgba(122,168,255,.06), transparent 50%),
+        linear-gradient(180deg, var(--hc-bg), var(--hc-bg));
+      padding-top: 2rem;
+      overflow-y:auto;
+      overflow-x:clip;
+      min-height:100vh;
+    }
+
+    /* Header + Nav */
+    header{
+      padding: .75rem 1.25rem;
+      border-bottom: 1px solid rgba(122,168,255,.12);
+      backdrop-filter: blur(6px);
+      background: rgba(8,12,16,.8);
+    }
+
+    .hc-navbar{
+      background: rgba(8,12,16,.8) !important;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(122,168,255,.12);
+      padding-top: .4rem;
+      padding-bottom: .4rem;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .brand{
+      font-weight:800;
+      letter-spacing:.4px;
+      background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      font-size: 1.15rem;
+      text-decoration:none;
+    }
+    .nav-links .nav-link{
+      color: var(--hc-muted) !important;
+      font-weight:600;
+      border-radius:10px;
+      border:1px solid transparent;
+      padding:.4rem .7rem;
+    }
+    .nav-links .nav-link:hover,
+    .nav-links .nav-link:focus{
+      color: var(--hc-text) !important;
+      background: rgba(122,168,255,.08);
+      border-color: rgba(122,168,255,.25);
+      text-decoration:none;
+    }
+    .navbar .nav-link.active{ color:var(--hc-accent)!important; }
+
+    .donate-img{
+      height: 32px;
+      width: auto;
+      border-radius: 8px;
+      filter: saturate(0.9) brightness(0.95);
+      transition: transform .12s ease, box-shadow .2s ease;
+    }
+    .donate-img:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(97,242,211,.15); }
+
+    /* Sections (solid) */
+    .section-shell{
+      background: var(--hc-surface) !important;
+      border-top: 1px solid rgba(122,168,255,.12);
+      border-bottom: 1px solid rgba(97,242,211,.12);
+      padding: 3rem 0;
+      position:relative;
+    }
+    .section-shell::before{ content:none !important; }
+
+    .tech-card{
+      background: var(--hc-surface) !important;
+      border: 1px solid var(--hc-border);
+      border-radius:16px;
+      box-shadow: var(--hc-shadow);
+      overflow:hidden;
+    }
+
+    .headline{
+      font-weight:800; letter-spacing:.4px; margin-bottom:.75rem;
+      background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lead-muted{ color:var(--hc-muted); }
+
+    /* Inputs */
+    .mono{
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    #humanizeInput, #humanizeOutput{
+      background: #0b1117 !important;
+      border: 1px solid rgba(122,168,255,.25) !important;
+      color: var(--hc-text) !important;
+      border-radius:12px;
+    }
+    #humanizeInput{ height:220px; }
+    #humanizeOutput{
+      min-height:220px;
+      white-space:pre-wrap;
+      word-wrap:break-word;
+      padding:.75rem;
+    }
+
+    /* Buttons */
+    .btn-neo{
+      --bs-btn-color:#061015;
+      --bs-btn-bg: var(--hc-accent);
+      --bs-btn-border-color: var(--hc-accent);
+      --bs-btn-hover-bg: #48e6c3;
+      --bs-btn-hover-border-color:#48e6c3;
+      box-shadow: 0 0 0 0 rgba(97,242,211,.45);
+      transition: transform .12s ease, box-shadow .2s ease;
+      font-weight:600; letter-spacing:.3px; border-radius:10px;
+    }
+    .btn-neo:hover{ transform: translateY(-1px); box-shadow:0 10px 24px rgba(97,242,211,.22); }
+    .btn-neo:focus{ box-shadow:0 0 0 .2rem rgba(97,242,211,.28); }
+
+    /* Controls */
+    .control-row{
+      display:flex;
+      gap:.75rem;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: .75rem;
+    }
+    .control-row .form-select{
+      background:#0b1117;
+      border:1px solid rgba(122,168,255,.25);
+      color:var(--hc-text);
+      border-radius:10px;
+      padding:.45rem .65rem;
+      max-width: 280px;
+    }
+    .control-row label{
+      color: var(--hc-muted);
+      font-weight:600;
+      margin-right:.35rem;
+    }
+
+    footer.bg-dark{ background:#0b0f13!important; }
+    .tiny-note{ font-size:.92rem; color: var(--hc-muted); }
+    /* Meter text emphasis */
+#aiMeterLabel strong { color: var(--hc-text); }
+
+  </style>
+</head>
+
+<body class="matrix-container">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark hc-navbar">
+    <div class="container topbar">
+      <a class="navbar-brand brand" href="/" aria-label="Go to HiddenChars home">
+        AI Hidden-Character Highlighter
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="/humanize.html" aria-current="page">Humanize</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/contact.html">Contact</a>
+          </li>
+
+          <!-- Donate -->
+          <li class="nav-item d-flex align-items-center ms-lg-2">
+            <form action="https://www.paypal.com/donate" method="post" target="_top" class="m-0">
+              <input type="hidden" name="business" value="Q43A9FB5SFM4A" />
+              <input type="hidden" name="no_recurring" value="0" />
+              <input type="hidden" name="item_name"
+                     value="If you find this tool helpful, please consider a small donation via PayPal" />
+              <input type="hidden" name="currency_code" value="USD" />
+              <input type="image"
+                     class="donate-img"
+                     src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+                     name="submit"
+                     title="Donate via PayPal"
+                     alt="Donate with PayPal button" />
+              <img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Intro -->
+  <section class="section-shell">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+          <div class="tech-card">
+            <div class="card-body p-4 p-md-5">
+              <h1 class="headline h3 mb-3">Humanize AI Text</h1>
+              <p class="lead-muted mb-2">
+                Paste text that feels stiff or robotic and generate a more natural, human-sounding version—without changing the meaning.
+              </p>
+              <p class="tiny-note mb-0">
+                This is a client-side scaffold: it uses case-preserving regex swaps + a context-aware rewrite layer (rule-based).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool -->
+  <section class="section-shell">
+    <div class="container my-3 my-md-4">
+      <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+
+          <div class="control-row">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="d-flex align-items-center">
+                <label for="toneSelect" class="mb-0">Tone</label>
+                <select id="toneSelect" class="form-select ms-2">
+                  <option value="neutral" selected>Neutral</option>
+                  <option value="friendly">Friendly</option>
+                  <option value="professional">Professional</option>
+                  <option value="confident">Confident</option>
+                  <option value="concise">Concise</option>
+                </select>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <label for="strengthSelect" class="mb-0">Strength</label>
+                <select id="strengthSelect" class="form-select ms-2">
+                  <option value="light" selected>Light</option>
+                  <option value="medium">Medium</option>
+                  <option value="strong">Strong</option>
+                </select>
+              </div>
+
+              <div class="form-check ms-1">
+                <input class="form-check-input" type="checkbox" value="" id="contractionsToggle" checked>
+                <label class="form-check-label tiny-note" for="contractionsToggle">
+                  Use contractions (more natural)
+                </label>
+              </div>
+
+              <div class="form-check ms-1">
+                <input class="form-check-input" type="checkbox" value="" id="soffenToggle" checked>
+                <label class="form-check-label tiny-note" for="soffenToggle">
+                  Soften run-on sentences
+                </label>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column align-items-end gap-2" style="min-width: 320px;">
+  <!-- AI-likelihood meter (above Humanize button) -->
+  <div style="width:100%;">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <span class="tiny-note" id="aiMeterLabel">AI likelihood: —</span>
+      <span class="tiny-note" id="aiMeterScore">—</span>
+    </div>
+    <div class="progress" style="height:10px; background:#0b1117; border:1px solid rgba(122,168,255,.25); border-radius:10px;">
+      <div id="aiMeterBar" class="progress-bar" role="progressbar"
+           style="width:0%; background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </div>
+    <div class="tiny-note mt-1" style="opacity:.9;">
+      Heuristic estimate (client-side). Not definitive.
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex gap-2">
+    <button id="humanizeBtn" class="btn btn-neo">Humanize</button>
+    <button id="copyBtn" class="btn btn-outline-light">Copy Output</button>
+  </div>
+</div>
+
+          </div>
+
+          <h2 class="headline h5 mb-2">Input</h2>
+          <textarea id="humanizeInput" class="form-control mono mb-3" placeholder="Paste text here…"></textarea>
+
+          <h2 class="headline h5 mb-2">Output</h2>
+          <div id="humanizeOutput" class="mono mb-3" aria-live="polite"></div>
+
+          <div class="d-flex gap-2 flex-wrap">
+            <button id="downloadHumanizedBtn" class="btn btn-neo">Download Humanized .txt</button>
+            <button id="clearBtn" class="btn btn-outline-light">Clear</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; 2025</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <!-- Humanize scaffold script (case-preserving swaps + context-aware rewrite layer) -->
+  <script defer>
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+function analyzeAiLikelihood(text){
+  const t = (text || "").trim();
+  if (!t) return { score: 0, band: "—", reasons: [] };
+
+  const lower = t.toLowerCase();
+
+  // Stronger indicators (more specific to AI boilerplate)
+  const strongPhrases = [
+    "as an ai language model", "as an ai", "i don't have access to real-time data",
+    "it is important to note that", "it is worth noting that", "key takeaways",
+    "in conclusion", "to summarize", "in summary"
+  ];
+
+  // Weaker indicators (common in human writing too)
+  const weakPhrases = [
+    "furthermore", "moreover", "additionally", "therefore", "thus",
+    "overall", "robust", "comprehensive", "delve into", "dive into"
+  ];
+
+  let strongHits = 0, weakHits = 0;
+
+  for (const p of strongPhrases) if (lower.includes(p)) strongHits++;
+  for (const p of weakPhrases) if (lower.includes(p)) weakHits++;
+
+  const words = t.match(/[A-Za-z0-9']+/g) || [];
+  const wordCount = words.length;
+
+  const sentences = t
+    .replace(/\r\n/g, "\n")
+    .split(/(?<=[.!?])(?:\s+|\n+)/)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const sentenceCount = sentences.length;
+
+  // Sentence length uniformity (down-weighted to reduce false positives)
+  const sentLens = sentences.map(s => (s.match(/[A-Za-z0-9']+/g) || []).length).filter(n => n > 0);
+  const avgLen = sentLens.reduce((a,b)=>a+b,0) / (sentLens.length || 1);
+  const variance = sentLens.reduce((a,b)=>a+Math.pow(b-avgLen,2),0) / (sentLens.length || 1);
+  const stdDev = Math.sqrt(variance);
+  const uniformity = avgLen ? (1 - clamp(stdDev / avgLen, 0, 1)) : 0; // 0–1
+
+  // Transition density (requires relatively high usage to matter)
+  const transitions = (lower.match(/\b(furthermore|moreover|additionally|therefore|however|thus|consequently)\b/g) || []).length;
+  const transitionRate = wordCount ? transitions / wordCount : 0;
+
+  // Bullet/list density (only matters when heavy)
+  const bulletLines = (t.match(/^\s*([-*•]|\d+\.)\s+/gm) || []).length;
+
+  // Repetition: repeated 3-gram count (simple)
+  const tokens = words.map(w => w.toLowerCase());
+  const trigrams = new Map();
+  for (let i = 0; i < tokens.length - 2; i++){
+    const g = tokens[i] + " " + tokens[i+1] + " " + tokens[i+2];
+    trigrams.set(g, (trigrams.get(g) || 0) + 1);
+  }
+  let repeatedTrigrams = 0;
+  for (const [,v] of trigrams) if (v >= 3) repeatedTrigrams++;
+
+  // --------------------------
+  // Conservative score assembly
+  // --------------------------
+  let score = 0;
+  const reasons = [];
+
+  // Strong phrases (0–45): only escalates when there are multiple
+  const strongScore = clamp(strongHits * 18, 0, 45);
+  score += strongScore;
+  if (strongHits >= 2) reasons.push("multiple AI-style boilerplate phrases");
+  else if (strongHits === 1) reasons.push("AI-style boilerplate phrase");
+
+  // Weak phrases (0–12): light effect to avoid flagging formal writing
+  const weakScore = clamp(weakHits * 3, 0, 12);
+  score += weakScore;
+  if (weakHits >= 4) reasons.push("heavy formal transition phrasing");
+
+  // Uniformity (0–12): reduced impact
+  // Only count if enough sentences to be meaningful
+  if (sentenceCount >= 6) {
+    score += clamp(uniformity * 12, 0, 12);
+    if (uniformity > 0.78) reasons.push("very uniform sentence lengths");
+  }
+
+  // Transition density (0–16): only matters above a higher bar
+  // Rate ~0.02 means 2 transitions per 100 words (pretty high)
+  score += clamp((transitionRate / 0.02) * 16, 0, 16);
+  if (transitionRate > 0.018 && wordCount >= 120) reasons.push("very frequent transition words");
+
+  // Bullets (0–8): only if list-heavy
+  if (bulletLines >= 5) {
+    score += 8;
+    reasons.push("list-heavy structure");
+  } else if (bulletLines >= 3) {
+    score += 4;
+  }
+
+  // Repetition (0–10)
+  score += clamp(repeatedTrigrams * 2.5, 0, 10);
+  if (repeatedTrigrams >= 3) reasons.push("repetitive phrasing");
+
+  // --------------------------
+  // Short-text damping (strong)
+  // --------------------------
+  // Prevent overconfident labels on short inputs
+  if (wordCount < 200) score *= 0.85;
+  if (wordCount < 120) score *= 0.70;
+  if (wordCount < 60)  score *= 0.50;
+  if (wordCount < 30)  score *= 0.35;
+
+  score = Math.round(clamp(score, 0, 100));
+
+  // --------------------------
+  // Tuned bands (conservative)
+  // --------------------------
+  // Low: 0–49, Medium: 50–79, High: 80–100
+  let band = "Low";
+  if (score >= 80) band = "High";
+  else if (score >= 50) band = "Medium";
+
+  // Extra guardrail: High requires either 2+ strong phrases OR long text + multiple signals
+  if (band === "High") {
+    const hasStrong = strongHits >= 2;
+    const longEnough = wordCount >= 180;
+    const multiSignal = (weakHits >= 4) || (transitionRate > 0.018) || (repeatedTrigrams >= 3);
+    if (!hasStrong && !(longEnough && multiSignal)) band = "Medium";
+  }
+
+  return { score, band, reasons };
+}
+
+function updateAiMeter(text){
+  const { score, band } = analyzeAiLikelihood(text);
+
+  const label = document.getElementById("aiMeterLabel");
+  const scoreEl = document.getElementById("aiMeterScore");
+  const bar = document.getElementById("aiMeterBar");
+
+  if (!label || !scoreEl || !bar) return;
+
+  // Display
+  label.innerHTML = `AI likelihood: <strong>${band}</strong>`;
+  scoreEl.textContent = (band === "—") ? "—" : `${score}/100`;
+
+  // Bar
+  bar.style.width = `${score}%`;
+  bar.setAttribute("aria-valuenow", String(score));
+}
+
+    // --- DOM helper ---
+    const $ = (id) => document.getElementById(id);
+
+    // --- Download helper ---
+    function downloadText(filename, text){
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // --- Clipboard helper ---
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("Copied to clipboard.");
+      }catch{
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Copied to clipboard.");
+      }
+    }
+
+    // --- Minimal toast ---
+    function showToast(message){
+      const el = document.createElement("div");
+      el.textContent = message;
+      el.style.position = "fixed";
+      el.style.bottom = "20px";
+      el.style.left = "50%";
+      el.style.transform = "translateX(-50%)";
+      el.style.padding = "10px 14px";
+      el.style.borderRadius = "12px";
+      el.style.border = "1px solid rgba(122,168,255,.25)";
+      el.style.background = "rgba(8,12,16,.92)";
+      el.style.color = "var(--hc-text)";
+      el.style.zIndex = 10000;
+      el.style.boxShadow = "0 10px 22px rgba(0,0,0,.35)";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1400);
+    }
+
+    // ============================================================
+    // 1) CASE-PRESERVING REGEX SWAPS (supports capture groups)
+    // ============================================================
+   function applyCaseLike(src, replacement) {
+  // Ensure replacement is always a string
+  if (replacement === undefined || replacement === null) replacement = "";
+  replacement = String(replacement);
+
+  // Ensure src is always a string too
+  if (src === undefined || src === null) src = "";
+  src = String(src);
+
+  if (!src) return replacement;
+
+  // ALL CAPS
+  if (src === src.toUpperCase()) return replacement.toUpperCase();
+
+  // Title Case (first letter capitalized, rest lower)
+  const isTitle =
+    src.length > 1 &&
+    src[0] === src[0].toUpperCase() &&
+    src.slice(1) === src.slice(1).toLowerCase();
+
+  if (isTitle) return replacement ? (replacement[0].toUpperCase() + replacement.slice(1)) : replacement;
+
+  // all lower
+  if (src === src.toLowerCase()) return replacement.toLowerCase();
+
+  // Mixed case: leave replacement as-is
+  return replacement;
+}
+
+
+    function replacePreserveCase(text, re, out) {
+  return text.replace(re, (...args) => {
+    const match = args[0];
+    let raw = (typeof out === "function") ? out(...args) : out;
+
+    // Guarantee raw becomes a string (prevents undefined errors)
+    if (raw === undefined || raw === null) raw = "";
+
+    return applyCaseLike(match, raw);
+  });
+}
+
+
+    // Define swaps as objects: { re: /.../gi, out: "..." } or out: (match, g1, g2, offset, str) => "..."
+    const swaps = [
+      // AI disclaimers
+      { re: /\bAs an AI language model\b[:, ]*/gi, out: "" },
+      { re: /\bAs an AI\b[:, ]*/gi, out: "" },
+
+      // Wordiness + academic
+      { re: /\bIn conclusion\b[:, ]*/gi, out: "" },
+      { re: /\bIn summary\b[:, ]*/gi, out: "" },
+      { re: /\bTo summarize\b[:, ]*/gi, out: "" },
+      { re: /\bIt is important to note that\b\s+/gi, out: "" },
+      { re: /\bIt is worth noting that\b\s+/gi, out: "Notably, " },
+      { re: /\bIn order to\b/gi, out: "to" },
+      { re: /\bDue to the fact that\b/gi, out: "because" },
+      { re: /\bIn the event that\b/gi, out: "if" },
+
+      // Transitions
+      { re: /\bFurthermore\b/gi, out: "also" },
+      { re: /\bMoreover\b/gi, out: "plus" },
+      { re: /\bAdditionally\b/gi, out: "also" },
+      { re: /\bHowever\b/gi, out: "but" },
+      { re: /\bNevertheless\b/gi, out: "still" },
+      { re: /\bOn the other hand\b/gi, out: "that said" },
+
+      // Corporate
+      { re: /\bUtilize\b/gi, out: "use" },
+      { re: /\bLeverage\b/gi, out: "use" },
+      { re: /\bFacilitate\b/gi, out: "help" },
+      { re: /\bCommence\b/gi, out: "start" },
+
+      // Capture-group example: "with regard to X" -> "regarding X"
+      { re: /\bwith regard to\s+([^,.!?;:]+)/gi, out: (_m, g1) => `regarding ${g1}` },
+
+      // Clean multi-spaces
+      { re: /\s{2,}/g, out: " " }
+    ];
+
+    function applySwaps(text) {
+      let t = text;
+      for (const s of swaps) t = replacePreserveCase(t, s.re, s.out);
+      return t;
+    }
+
+    // ============================================================
+    // 2) CONTEXT-AWARE REWRITE LAYER (rule-based, no LLM)
+    // ============================================================
+
+    // sentence split: pragmatic, not perfect (keeps abbreviations mostly OK)
+    function splitSentences(text) {
+      const normalized = (text || "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\s+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+
+      // Split on sentence terminators followed by whitespace/newline
+      return normalized
+        .split(/(?<=[.!?])(?:\s+|\n+)/)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    function joinSentences(sentences) {
+      return sentences.join(" ").replace(/\s+/g, " ").trim();
+    }
+
+    function applyContractions(text) {
+      const contractions = [
+        { re: /\bdo not\b/gi, out: "don't" },
+        { re: /\bdoes not\b/gi, out: "doesn't" },
+        { re: /\bdid not\b/gi, out: "didn't" },
+        { re: /\bcannot\b/gi, out: "can't" },
+        { re: /\bwill not\b/gi, out: "won't" },
+        { re: /\bis not\b/gi, out: "isn't" },
+        { re: /\bare not\b/gi, out: "aren't" },
+        { re: /\bshould not\b/gi, out: "shouldn't" },
+        { re: /\bwould not\b/gi, out: "wouldn't" },
+        { re: /\bcould not\b/gi, out: "couldn't" },
+        { re: /\bI am\b/gi, out: "I'm" },
+        { re: /\bI have\b/gi, out: "I've" },
+        { re: /\bwe are\b/gi, out: "we're" },
+        { re: /\byou are\b/gi, out: "you're" },
+        { re: /\bthey are\b/gi, out: "they're" },
+      ];
+      let t = text;
+      for (const s of contractions) t = replacePreserveCase(t, s.re, s.out);
+      return t;
+    }
+
+    // Reduce repetitive transition starters within a paragraph/single run
+    function deDuplicateTransitions(sentences) {
+      let seenAdd = 0;
+      let seenBut = 0;
+
+      return sentences.map((s) => {
+        let out = s;
+
+        // Additive starter repetition
+        if (/^(Moreover|Furthermore|Additionally|In addition|Also)\b/i.test(out)) {
+          seenAdd++;
+          if (seenAdd > 1) {
+            out = out.replace(/^(Moreover|Furthermore|Additionally|In addition|Also)\b[:,]?\s+/i, "");
+          }
+        }
+
+        // Contrast starter repetition
+        if (/^(However|That said|On the other hand)\b/i.test(out)) {
+          seenBut++;
+          if (seenBut > 1) {
+            out = out.replace(/^(However|That said|On the other hand)\b[:,]?\s+/i, "Still, ");
+          }
+        }
+
+        // Normalize some starters (contextual)
+        out = out.replace(/^(However)\b[:,]?\s+/i, "But ");
+        out = out.replace(/^(Furthermore|Additionally|In addition)\b[:,]?\s+/i, "Also, ");
+        out = out.replace(/^(Moreover)\b[:,]?\s+/i, "Plus, ");
+
+        // Ensure capitalization at sentence start
+        out = out.replace(/^\s*([a-z])/, (_, c) => c.toUpperCase());
+
+        return out.trim();
+      });
+    }
+
+    // Light run-on softener: split very long sentences at safe conjunctions
+    function softenRunOns(sentences, strength) {
+      const maxLen = (strength === "strong") ? 170 : (strength === "medium") ? 200 : 240;
+      const splitRe = /\s+(and|but|so|because|which|while)\s+/i;
+
+      const out = [];
+      for (const s of sentences) {
+        if (s.length <= maxLen) { out.push(s); continue; }
+
+        const parts = s.split(splitRe);
+        // [chunk, conj, chunk, conj, chunk...]
+        if (parts.length >= 3) {
+          const first = (parts[0] + " " + parts[1] + " " + parts[2]).trim();
+          const rest = parts.slice(3).join(" ").trim();
+
+          out.push(first.endsWith(".") || first.endsWith("!") || first.endsWith("?") ? first : first + ".");
+          if (rest) {
+            out.push(rest.replace(/^\s*([a-z])/, (_, c) => c.toUpperCase()));
+          }
+        } else {
+          out.push(s);
+        }
+      }
+      return out;
+    }
+
+    // Remove “essay wrappers” only when they appear as standalone openers/closers
+    function removeWrapperPhrases(text) {
+      let t = text.trim();
+      t = t.replace(/^\s*(in conclusion|to summarize|in summary)\b[:,]?\s*/i, "");
+      t = t.replace(/\s*(in conclusion|to summarize|in summary)\b[:,]?\s*$/i, "");
+      return t.trim();
+    }
+
+    // Context-aware rewrite orchestrator
+    function contextAwareRewrite(text, opts) {
+      let t = removeWrapperPhrases(text);
+
+      let sentences = splitSentences(t);
+
+      // Reduce robotic starter repetition
+      sentences = deDuplicateTransitions(sentences);
+
+      // Optional contractions
+      if (opts.contractions) {
+        sentences = sentences.map(applyContractions);
+      }
+
+      // Optional run-on softening
+      if (opts.softenRunOns) {
+        sentences = softenRunOns(sentences, opts.strength);
+      }
+
+      return joinSentences(sentences);
+    }
+    // Replace em dash (—) and en dash (–) with standard hyphen (-)
+    function normalizeDashes(text) {
+    if (!text) return text;
+
+    // Replace:
+    // —  (U+2014 EM DASH)
+    // –  (U+2013 EN DASH)
+    // −  (U+2212 MINUS SIGN)
+    return text
+        .replace(/[\u2014\u2013\u2212]/g, "-");
+    }
+    // ============================================================
+    // Main Humanize Function
+    // ============================================================
+    async function humanizeText(input, tone, strength){
+      let text = (input || "").trim();
+    // Normalize long dashes to standard hyphen
+        text = normalizeDashes(text);
+
+      // 1) case-preserving swap layer
+      text = applySwaps(text);
+
+      // 2) context-aware rewrite layer
+      const opts = {
+        strength,
+        contractions: $("contractionsToggle").checked,
+        softenRunOns: $("soffenToggle").checked
+      };
+      text = contextAwareRewrite(text, opts);
+
+      // 3) light tone hint
+      if(tone === "friendly"){
+        // add a gentle warmth without changing meaning
+        text = text.replace(/\.$/, ".");
+      } else if(tone === "professional"){
+        // remove casual emoji if any slipped in
+        text = text.replace(/🙂|😄|😁|😊/g, "");
+      } else if(tone === "confident"){
+        // reduce hedging a bit (light)
+        text = text
+          .replace(/\b(might|may|could)\b/gi, (m) => applyCaseLike(m, "can"))
+          .replace(/\bperhaps\b/gi, (m) => applyCaseLike(m, ""))
+          .replace(/\s{2,}/g, " ")
+          .trim();
+      } else if(tone === "concise"){
+        // compact whitespace + remove some filler
+        text = text
+          .replace(/\b(very|really|actually|basically)\b/gi, "")
+          .replace(/\s{2,}/g, " ")
+          .trim();
+      }
+
+      // 4) strength whitespace normalize
+      if(strength === "strong"){
+        text = text.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+      }else if(strength === "medium"){
+        text = text.replace(/[ \t]+\n/g, "\n").replace(/\n{4,}/g, "\n\n\n");
+      }
+
+      return text;
+    }
+
+    // ============================================================
+    // Event wiring
+    // ============================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      const inputEl = $("humanizeInput");
+      // Initialize + live update AI-likelihood meter
+updateAiMeter(inputEl.value || "");
+inputEl.addEventListener("input", () => updateAiMeter(inputEl.value));
+inputEl.addEventListener("paste", () => setTimeout(() => updateAiMeter(inputEl.value), 0));
+      const outputEl = $("humanizeOutput");
+
+      $("humanizeBtn").addEventListener("click", async () => {
+        const input = inputEl.value;
+        if(!input.trim()){
+          showToast("Paste some text first.");
+          return;
+        }
+        outputEl.textContent = "Working…";
+
+        const tone = $("toneSelect").value;
+        const strength = $("strengthSelect").value;
+
+        try{
+          const out = await humanizeText(input, tone, strength);
+          outputEl.textContent = out;
+        }catch(err){
+          console.error(err);
+          outputEl.textContent = "";
+          showToast("Error generating output.");
+        }
+      });
+
+      $("copyBtn").addEventListener("click", async () => {
+        const text = outputEl.textContent || "";
+        if(!text.trim()){
+          showToast("Nothing to copy yet.");
+          return;
+        }
+        await copyToClipboard(text);
+      });
+
+      $("downloadHumanizedBtn").addEventListener("click", () => {
+        const text = outputEl.textContent || "";
+        if(!text.trim()){
+          showToast("Nothing to download yet.");
+          return;
+        }
+        downloadText("humanized.txt", text);
+      });
+
+      $("clearBtn").addEventListener("click", () => {
+  inputEl.value = "";
+  outputEl.textContent = "";
+  inputEl.dispatchEvent(new Event("input")); // triggers live meter listeners
+  updateAiMeter(""); // extra-safe
+});
+    });
+  </script>
+</body>
+</html>
