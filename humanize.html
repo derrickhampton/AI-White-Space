@@ -883,6 +883,14 @@ inputEl.addEventListener("paste", () => setTimeout(() => updateAiMeter(inputEl.v
           return;
         }
         outputEl.textContent = "Working…";
+        
+        fetch('/api/hidden-chars.php', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: inputEl.value })
+        });
 
         const tone = $("toneSelect").value;
         const strength = $("strengthSelect").value;
