@@ -17,124 +17,291 @@
   <meta property="og:description" content="Understand how HiddenChars detects invisible Unicode characters and rewrites robotic AI text naturally." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.hiddenchars.com/faq.html" />
+  <meta property="og:image" content="https://www.hiddenchars.com/assets/og-image.jpg" />
 
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <link href="css/styles.css" rel="stylesheet" />
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Privacy-page style parity -->
   <style>
-    body { background:#0b0f13; color:#e6eef5; font-family: Inter, sans-serif; }
-    .container { max-width: 950px; margin: 0 auto; padding: 2rem; }
-    h1 { font-size: 2rem; margin-bottom: 1rem; }
-    h2 { margin-top: 2rem; font-size: 1.3rem; }
-    p { line-height: 1.6; color:#cbd6df; }
-    a { color:#61f2d3; text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    .faq-section { margin-bottom:2rem; }
+    :root{
+      --hc-bg:#0b0f13;
+      --hc-surface:#0f141a;
+      --hc-accent:#61f2d3;
+      --hc-accent-2:#7aa8ff;
+      --hc-text:#e6eef5;
+      --hc-muted:#9fb0bf;
+      --hc-border:rgba(97,242,211,.35);
+      --hc-shadow:0 10px 30px rgba(15, 204, 170, .08);
+    }
+
+    html{ scroll-behavior:smooth; }
+    body.matrix-container{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--hc-text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(97,242,211,.08), transparent 50%),
+        radial-gradient(1000px 500px at 85% 110%, rgba(122,168,255,.06), transparent 50%),
+        linear-gradient(180deg, var(--hc-bg), var(--hc-bg));
+      padding-top: 2rem;
+      overflow-y:auto;
+      overflow-x:clip;
+      min-height:100vh;
+    }
+
+    /* Navbar (same pattern as privacy/contact/humanize) */
+    .hc-navbar{
+      background: rgba(8,12,16,.8) !important;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(122,168,255,.12);
+      padding-top: .4rem;
+      padding-bottom: .4rem;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .brand{
+      font-weight:800;
+      letter-spacing:.4px;
+      background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      font-size: 1.15rem;
+      text-decoration:none;
+    }
+    .nav-links .nav-link{
+      color: var(--hc-muted) !important;
+      font-weight:600;
+      border-radius:10px;
+      border:1px solid transparent;
+      padding:.4rem .7rem;
+    }
+    .nav-links .nav-link:hover,
+    .nav-links .nav-link:focus{
+      color: var(--hc-text) !important;
+      background: rgba(122,168,255,.08);
+      border-color: rgba(122,168,255,.25);
+      text-decoration:none;
+    }
+    .navbar .nav-link.active{ color:var(--hc-accent)!important; }
+
+    /* Sections (solid) */
+    .section-shell{
+      background: var(--hc-surface) !important;
+      border-top: 1px solid rgba(122,168,255,.12);
+      border-bottom: 1px solid rgba(97,242,211,.12);
+      padding: 3rem 0;
+    }
+
+    .tech-card{
+      background: var(--hc-surface) !important;
+      border: 1px solid var(--hc-border);
+      border-radius:16px;
+      box-shadow: var(--hc-shadow);
+      overflow:hidden;
+    }
+
+    .headline{
+      font-weight:800; letter-spacing:.4px; margin-bottom:.75rem;
+      background: linear-gradient(90deg, var(--hc-accent), var(--hc-accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lead-muted{ color:var(--hc-muted); }
+    .tiny-note{ font-size:.92rem; color: var(--hc-muted); }
+
+    /* FAQ specifics */
+    .faq h2{
+      font-size: 1.15rem;
+      margin-top: 1.6rem;
+    }
+    .faq ul{
+      color: var(--hc-muted);
+    }
+    .faq a{ color: var(--hc-accent); text-decoration:none; }
+    .faq a:hover{ text-decoration:underline; }
+
+    .callout{
+      background:#0b1117;
+      border: 1px solid rgba(122,168,255,.25);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+    }
+
+    footer.bg-dark{ background:#0b0f13!important; }
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <h1>HiddenChars FAQ: Zero-Width Space Detector & AI Humanizer</h1>
+<body class="matrix-container">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark hc-navbar">
+    <div class="container topbar">
+      <a class="navbar-brand brand" href="/" aria-label="Go to HiddenChars home">
+        AI Hidden-Character Highlighter
+      </a>
 
-    <p>
-      HiddenChars is a free online <strong>zero-width space detector</strong> and 
-      <strong>AI text humanizer</strong>. Below you’ll find answers explaining how 
-      the hidden character removal tool works and how the Humanize feature rewrites 
-      robotic AI-generated text into natural, readable language.
-    </p>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="faq-section">
-      <h2>What is a zero-width space?</h2>
-      <p>
-        A zero-width space (U+200B) is an invisible Unicode character used for formatting.
-        It does not display visually but can break search indexing, formatting, copying,
-        and SEO performance. Many AI systems and copy-paste workflows introduce hidden 
-        Unicode characters like zero-width joiners, non-breaking spaces (NBSP), and word joiners.
-      </p>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 nav-links">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/humanize.html">Humanize</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/faq.html" aria-current="page">FAQ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/privacy.html">Privacy</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <div class="faq-section">
-      <h2>How does the Hidden Character Detector work?</h2>
-      <p>
-        The HiddenChars tool scans your pasted text in your browser and detects 
-        invisible Unicode whitespace such as:
-      </p>
-      <ul>
-        <li>Zero-width space (U+200B)</li>
-        <li>Zero-width joiner (U+200D)</li>
-        <li>Zero-width non-joiner (U+200C)</li>
-        <li>Non-breaking space (U+00A0)</li>
-        <li>Word joiner (U+2060)</li>
-      </ul>
-      <p>
-        When detected, the tool highlights hidden characters and allows you to 
-        remove invisible Unicode safely before downloading clean text.
-      </p>
+  <!-- Header -->
+  <section class="section-shell">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+
+          <div class="tech-card">
+            <div class="card-body p-4 p-md-5">
+              <h1 class="headline h3 mb-2">HiddenChars FAQ</h1>
+              <p class="lead-muted mb-0">
+                Learn how our <strong>zero-width space detector</strong>, <strong>invisible Unicode character remover</strong>,
+                and <strong>AI text humanizer</strong> work—so you can clean, rewrite, and publish text confidently.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout mt-3">
+            <div class="lead-muted mb-0">
+              <strong>Quick tip:</strong> If your formatting breaks, search doesn’t match, or copy/paste behaves oddly,
+              run your text through the <a href="/">Hidden Character Detector</a> first—then use
+              <a href="/humanize.html">Humanize</a> to improve tone and readability.
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="faq-section">
-      <h2>Why do invisible characters matter for SEO?</h2>
-      <p>
-        Hidden whitespace can disrupt search engine indexing, keyword matching,
-        copy-paste accuracy, and web form submissions. Removing invisible Unicode
-        characters ensures clean HTML, accurate content indexing, and improved
-        technical SEO performance.
-      </p>
+  <!-- FAQ Body -->
+  <section class="section-shell">
+    <div class="container my-2 my-md-3">
+      <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+          <div class="tech-card">
+            <div class="card-body p-4 p-md-5 faq">
+
+              <h2 class="headline h5">What is a zero-width space?</h2>
+              <p class="lead-muted">
+                A <strong>zero-width space</strong> (U+200B) is an invisible Unicode character used for formatting and line-breaking.
+                It doesn’t display, but it can disrupt <strong>search indexing</strong>, copying, formatting, and SEO keyword matching.
+                AI tools and copy/paste workflows often introduce hidden Unicode characters like zero-width joiners,
+                non-breaking spaces (NBSP), and word joiners.
+              </p>
+
+              <h2 class="headline h5">How does the Hidden Character Detector work?</h2>
+              <p class="lead-muted">
+                The HiddenChars tool scans your pasted text in your browser and detects <strong>invisible Unicode whitespace</strong> such as:
+              </p>
+              <ul>
+                <li>Zero-width space (U+200B)</li>
+                <li>Zero-width joiner (U+200D)</li>
+                <li>Zero-width non-joiner (U+200C)</li>
+                <li>Non-breaking space (NBSP, U+00A0)</li>
+                <li>Word joiner (U+2060)</li>
+              </ul>
+              <p class="lead-muted">
+                When hidden characters are detected, the tool highlights them and helps you remove invisible Unicode safely before
+                downloading a clean, sanitized version for publishing, search, and reliable formatting.
+              </p>
+
+              <h2 class="headline h5">Why do invisible characters matter for SEO?</h2>
+              <p class="lead-muted">
+                Invisible whitespace can break keyword matching, prevent exact searches from working, and introduce subtle formatting
+                issues that impact content quality. Removing hidden Unicode characters helps ensure clean copy, accurate indexing, and
+                improved technical SEO.
+              </p>
+
+              <h2 class="headline h5">How does the AI Humanizer tool work?</h2>
+              <p class="lead-muted">
+                Humanize rewrites stiff or robotic AI-generated content using case-preserving transformations and context-aware,
+                rule-based rewriting to improve flow and readability. It helps by:
+              </p>
+              <ul>
+                <li>Replacing robotic transition phrases</li>
+                <li>Reducing repetitive sentence structure</li>
+                <li>Applying natural contractions (optional)</li>
+                <li>Softening long run-on sentences (optional)</li>
+              </ul>
+              <p class="lead-muted">
+                The goal is natural, human-sounding writing while preserving meaning and tone.
+              </p>
+
+              <h2 class="headline h5">Does HiddenChars store my text?</h2>
+              <p class="lead-muted">
+                No. Text processing occurs in your browser. HiddenChars does not intentionally store or log pasted text from the detection
+                or humanize tools.
+              </p>
+
+              <h2 class="headline h5">When should I use the Hidden Character Tool?</h2>
+              <p class="lead-muted">Use it when:</p>
+              <ul>
+                <li>Your text breaks unexpectedly when pasted</li>
+                <li>Search/replace isn’t working correctly</li>
+                <li>Keywords don’t match due to hidden whitespace</li>
+                <li>AI-generated content contains invisible Unicode characters</li>
+              </ul>
+
+              <h2 class="headline h5">Is HiddenChars free?</h2>
+              <p class="lead-muted">
+                Yes. The <strong>zero-width space remover</strong>, <strong>hidden character detector</strong>, and
+                <strong>AI humanizer</strong> are free to use online.
+              </p>
+
+              <hr style="border-color: rgba(122,168,255,.15); margin: 2rem 0;">
+
+              <p class="lead-muted mb-0">
+                Ready to clean and improve your text?
+                Try the <a href="/">Hidden Character Detector</a> or the <a href="/humanize.html">AI Text Humanizer</a>.
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="faq-section">
-      <h2>How does the AI Humanizer tool work?</h2>
-      <p>
-        The Humanize tool rewrites stiff or robotic AI-generated content using 
-        case-preserving transformations and context-aware rule-based rewriting.
-        It improves readability by:
-      </p>
-      <ul>
-        <li>Replacing robotic transition phrases</li>
-        <li>Reducing repetitive sentence structures</li>
-        <li>Applying natural contractions</li>
-        <li>Softening long run-on sentences</li>
-      </ul>
-      <p>
-        The result is clearer, more natural-sounding writing while preserving meaning.
-      </p>
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; 2025</p>
     </div>
+  </footer>
 
-    <div class="faq-section">
-      <h2>Does HiddenChars store my text?</h2>
-      <p>
-        No. Text processing occurs in your browser. HiddenChars does not intentionally
-        store or log pasted text from the detection or humanize tools.
-      </p>
-    </div>
-
-    <div class="faq-section">
-      <h2>When should I use the Hidden Character Tool?</h2>
-      <p>
-        Use it when:
-      </p>
-      <ul>
-        <li>Your text breaks unexpectedly when pasted</li>
-        <li>Search or replace is not working correctly</li>
-        <li>SEO rankings drop due to formatting issues</li>
-        <li>AI-generated content contains hidden whitespace</li>
-      </ul>
-    </div>
-
-    <div class="faq-section">
-      <h2>Is the HiddenChars tool free?</h2>
-      <p>
-        Yes. The zero-width space remover and AI humanizer are free to use online.
-      </p>
-    </div>
-
-    <p>
-      Try the <a href="/">Hidden Character Detector</a> or the 
-      <a href="/humanize.html">AI Text Humanizer</a> now.
-    </p>
-
-  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
   <!-- Structured Data for Rich Results -->
   <script type="application/ld+json">
@@ -147,7 +314,7 @@
         "name": "What is a zero-width space?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A zero-width space is an invisible Unicode character used for formatting that can interfere with search indexing and formatting."
+          "text": "A zero-width space is an invisible Unicode character used for formatting that can interfere with search indexing, copy/paste, and SEO keyword matching."
         }
       },
       {
@@ -155,7 +322,7 @@
         "name": "How does the Hidden Character Detector work?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It scans pasted text for invisible Unicode characters such as zero-width spaces, non-breaking spaces, and word joiners and allows safe removal."
+          "text": "It scans pasted text in your browser for invisible Unicode characters such as zero-width spaces, non-breaking spaces, and word joiners, then highlights and removes them safely."
         }
       },
       {
@@ -163,12 +330,11 @@
         "name": "How does the AI Humanizer work?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Humanize tool uses case-preserving and context-aware rewriting to make robotic AI-generated text sound natural and readable."
+          "text": "Humanize uses case-preserving transformations and context-aware, rule-based rewriting to make robotic AI-generated text sound natural while preserving meaning."
         }
       }
     ]
   }
   </script>
-
 </body>
 </html>
