@@ -396,7 +396,6 @@
 
   <!-- Humanize scaffold script (case-preserving swaps + context-aware rewrite layer) -->
   <script defer>
-    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
 
   function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
 
@@ -953,5 +952,114 @@ inputEl.addEventListener("paste", () => setTimeout(() => updateAiMeter(inputEl.v
 });
     });
   </script>
+
+
+
+
+<!-- 
+<script defer>
+  const $ = (id) => document.getElementById(id);
+
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+  // --- small debounce to avoid spamming the API on every keystroke ---
+  function debounce(fn, wait=250){
+    let t = null;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(...args), wait);
+    };
+  }
+
+  async function postJSON(url, payload){
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok || data.ok === false){
+      throw new Error(data.error || `Request failed (${res.status})`);
+    }
+    return data;
+  }
+
+  function renderAiMeter(score, band){
+    const label = $("aiMeterLabel");
+    const scoreEl = $("aiMeterScore");
+    const bar = $("aiMeterBar");
+    if(!label || !scoreEl || !bar) return;
+
+    label.innerHTML = `AI likelihood: <strong>${band || "—"}</strong>`;
+    scoreEl.textContent = (band === "—" || band == null) ? "—" : `${score}/100`;
+
+    bar.style.width = `${clamp(Number(score)||0, 0, 100)}%`;
+    bar.setAttribute("aria-valuenow", String(clamp(Number(score)||0, 0, 100)));
+  }
+
+  const updateAiMeterFromAPI = debounce(async (text) => {
+    const t = (text || "").trim();
+    if(!t){
+      renderAiMeter(0, "—");
+      return;
+    }
+    try{
+      const data = await postJSON("/api/ai_likelihood.php", { text: t });
+      renderAiMeter(data.score, data.band);
+    }catch{
+      // fail “quietly” to avoid annoying users if a request is blocked
+      renderAiMeter(0, "—");
+    }
+  }, 250);
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const inputEl = $("humanizeInput");
+    const outputEl = $("humanizeOutput");
+
+    // init meter
+    updateAiMeterFromAPI(inputEl?.value || "");
+
+    inputEl?.addEventListener("input", () => updateAiMeterFromAPI(inputEl.value));
+    inputEl?.addEventListener("paste", () => setTimeout(() => updateAiMeterFromAPI(inputEl.value), 0));
+
+    $("humanizeBtn")?.addEventListener("click", async () => {
+      const input = (inputEl?.value || "").trim();
+      if(!input){
+        outputEl.textContent = "";
+        return;
+      }
+
+      outputEl.textContent = "Working…";
+
+      const payload = {
+        text: input,
+        tone: $("toneSelect")?.value || "neutral",
+        strength: $("strengthSelect")?.value || "light",
+        contractions: !!$("contractionsToggle")?.checked,
+        softenRunOns: !!$("soffenToggle")?.checked
+      };
+
+      try{
+        const data = await postJSON("/api/humanize.php", payload);
+        outputEl.textContent = data.humanized || "";
+        // update meter after humanize too (optional)
+        updateAiMeterFromAPI(outputEl.textContent);
+      }catch(err){
+        console.error(err);
+        outputEl.textContent = "";
+      }
+    });
+
+    $("clearBtn")?.addEventListener("click", () => {
+      if(inputEl) inputEl.value = "";
+      if(outputEl) outputEl.textContent = "";
+      renderAiMeter(0, "—");
+    });
+  });
+</script> -->
+
+
+
+
 </body>
 </html>
